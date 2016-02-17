@@ -1,0 +1,22 @@
+{
+  "name": "babelot-server",
+  "version": "0.0.0",
+  "description": "Resful API for the babelot project",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/dharness/babelot-server.git"
+  },
+  "author": "Dylan Harness <dharness@uwo.ca>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dharness/babelot-server/issues"
+  },
+  "homepage": "https://github.com/dharness/babelot-server#readme",
+  "dependencies": {
+    "express": "^4.13.4"
+  }
+}
