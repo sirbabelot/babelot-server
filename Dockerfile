@@ -7,7 +7,7 @@ RUN npm i -g nodemon
 WORKDIR /usr/src/app
 
 # Bundle app source
-COPY . /usr/src/app
+COPY ./app /usr/src/app
 
 RUN npm i
 
