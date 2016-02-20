@@ -1,6 +1,6 @@
 web:
-  build: .
+  build: ./app
   ports:
     - "4444:3443"
   volumes:
-   - ./:/usr/src/app
+    - ./app:/usr/src/app
