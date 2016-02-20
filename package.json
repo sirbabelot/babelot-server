@@ -3,8 +3,12 @@
   "version": "0.0.0",
   "description": "Resful API for the babelot project",
   "main": "index.js",
+  "engines": {
+    "node": "5.3.0"
+  },
   "scripts": {
-    "test": "npm test"
+    "test": "npm test",
+    "start": "nodemon -L server"
   },
   "repository": {
     "type": "git",
@@ -17,6 +21,17 @@
   },
   "homepage": "https://github.com/dharness/babelot-server#readme",
   "dependencies": {
-    "express": "^4.13.4"
+    "bluebird": "3.3.1",
+    "body-parser": "1.15.0",
+    "bookshelf": "0.9.2",
+    "dotenv": "2.0.0",
+    "express": "^4.13.4",
+    "fs": "0.0.2",
+    "fs-promise": "0.4.1",
+    "https": "1.0.0",
+    "knex": "0.10.0",
+    "pg": "4.4.6",
+    "superagent": "1.7.2",
+    "twilio": "2.9.0"
   }
 }
