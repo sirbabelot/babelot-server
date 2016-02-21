@@ -1,6 +1,7 @@
 web:
-  build: ./app
+  build: .
   ports:
     - "4444:3443"
   volumes:
     - ./app:/usr/src/app
+    - /usr/src/app/node_modules

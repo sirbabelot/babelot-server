@@ -46,8 +46,9 @@ var Auth = {
 
     token.addGrant(ipmGrant);
     token.identity = identity;
-    
+
     // Serialize the token to a JWT string and include it in a JSON response
+    return res.send('Naila Nur')
     res.send({
         identity: identity,
         token: token.toJwt()
