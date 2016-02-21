@@ -9,9 +9,30 @@ var Auth = require('./api/controllers/Auth.js');
 var knex = require('knex');
 var PORT = process.env.PORT || 3443;
 
+knex({
+  client: 'pg',
+  connection: {
+    user: 'postgres',
+    database: 'postgres',
+    port: 5432,
+    host: '172.17.0.2'
+  }
+});
 
-app.use(bodyParser.urlencoded({ extended: false }))
-// Setup HTTPS
+console.log(knex);
+// knex.schema.createTableIfNotExists('users', function (table) {
+//   table.increments();
+//   table.string('name');
+//   table.timestamps();
+// })
+
+// knex('table').insert({a: 'b'}).returning('*').toString();
+
+
+app.use(bodyParser.urlencoded({
+    extended: false
+  }))
+  // Setup HTTPS
 var options = {
   key: fs.readFileSync('config/private.key'),
   cert: fs.readFileSync('config/certificate.pem')
@@ -19,11 +40,11 @@ var options = {
 
 app.set('port_https', PORT); // make sure to use the same port as above, or better yet, use the same variable
 // Secure traffic only
-app.all('*', function(req, res, next){
+app.all('*', function(req, res, next) {
   if (req.secure) {
     return next();
   };
- res.redirect('https://' + req.hostname + ':' + app.get('port_https') + req.url);
+  res.redirect('https://' + req.hostname + ':' + app.get('port_https') + req.url);
 });
 
 /* Allow Cross-Origin requests */
@@ -37,5 +58,5 @@ app.get('/token', Auth.getIMToken);
 app.post('/googletoken', Auth.getGoogleToken);
 
 var secureServer = https.createServer(options, app).listen(PORT, () => {
-    console.log(`Server listening at https://localhost:${PORT}`);
+  console.log(`Server listening at https://localhost:${PORT}`);
 });
