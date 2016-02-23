@@ -1,4 +1,3 @@
-"use strict";
 var request = require('superagent');
 var AccessToken = require('twilio').AccessToken;
 var IpMessagingGrant = AccessToken.IpMessagingGrant;
