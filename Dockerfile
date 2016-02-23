@@ -13,6 +13,6 @@ COPY ./app /usr/src/app
 
 RUN npm i
 
-EXPOSE 3443
+EXPOSE 8080
 
 CMD [ "npm", "start" ]

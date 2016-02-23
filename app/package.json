@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "npm test",
-    "start": "nodemon -L --debug server"
+    "start": "nodemon -L server --use_strict"
   },
   "repository": {
     "type": "git",

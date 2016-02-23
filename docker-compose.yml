@@ -1,10 +1,17 @@
-web:
-  build: . # Where to look for the Dockerfile to build from
+nginx:
+  build: ./nginx
+  links:
+    - node:node
   ports:
-    - "4444:3443"
+    - "80:80"
+    - "443:443"
+node:
+  build: .
+  ports:
+    - "8080:8080"
   volumes:
-    - ./app:/usr/src/app # This is mounted to the host, aka synced to your computer, to support hot-loading
-    - /usr/src/app/node_modules # This is a "data volume" (see docker docs) to store our node_modules
+    - ./app:/usr/src/app
+    - /usr/src/app/node_modules
   links:
     - pg
   environment:
@@ -13,3 +20,5 @@ web:
     - PGUSER=postgres
 pg:
   image: postgres
+  ports:
+    - "5432:5432"
