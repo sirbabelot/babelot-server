@@ -1,10 +1,29 @@
 var express = require('express');
+var co = require('co');
 var router =  express.Router();
+var User = require('./userModel.js')
+var googleAuth = require(`${__base}/middleware/googleAuth.js`);
 
 
-/* /user/ */
+/* All User routes first require a user to be logged in */
+router.use(googleAuth.isAuthenticated);
+
+
 router.get('/', (req, res) => {
-  res.send('lemmons')
+  co(function *(){
+    var user = yield User.where({}).fetch({});
+    res.send(user);
+  });
+});
+
+router.get('/login', (req, res) => {
+  co(function *(){
+    var googleProfile = req.verifiedPayload;
+    var user = yield User.where({
+      email: googleProfile.email
+    }).fetch({});
+    res.send(user);
+  });
 })
 
 /* /user/:id */

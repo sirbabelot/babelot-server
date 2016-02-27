@@ -1,11 +1,15 @@
+// To allow relative requires in other modules
+global.__base = __dirname + '/';
 require('dotenv').load();
 var express = require('express');
 var bodyParser = require('body-parser');
 var cors = require('./middleware/cors.js');
 
+
 /* routers */
 var userController = require('./api/user/userController.js');
 var tokenController = require('./api/token/tokenController.js');
+
 
 /* app */
 var app = express();
@@ -13,9 +17,6 @@ var PORT = process.env.PORT || 8080;
 
 app.use(cors);
 app.use(bodyParser.json());
-
-// MIDDLEWARE
-app.use(require('./middleware/cors.js'));
 
 // ROUTERS
 app.use('/user', userController);

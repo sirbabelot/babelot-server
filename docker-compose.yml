@@ -19,6 +19,6 @@ node:
     - PGDATABASE=postgres
     - PGUSER=postgres
 pg:
-  image: postgres
+  build: ./postgres
   ports:
     - "5432:5432"
