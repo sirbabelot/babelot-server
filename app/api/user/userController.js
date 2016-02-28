@@ -11,8 +11,9 @@ router.use(googleAuth.isAuthenticated);
 
 router.get('/', (req, res) => {
   co(function *(){
-    var user = yield User.where({}).fetch({});
-    res.send(user);
+    // var user = yield User.where({}).fetch({});
+    var googleProfile = req.verifiedPayload
+    res.send(googleProfile);
   });
 });
 

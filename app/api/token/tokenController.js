@@ -9,7 +9,7 @@ var router = express.Router();
 var auth = new google.auth.OAuth2('176803199914-d0icptds3ur0mrcj20hadptifmk5f4f4.apps.googleusercontent.com', 'ubcxP9IdVjT3DhaEn4CZsmZg', 'http://localhost:3000/redirect')
 
 /* All token routes first require a user to be logged in */
-// router.use(googleAuth.isAuthenticated);
+router.use(googleAuth.isAuthenticated);
 
 /* Used for user oAuth2 through google accounts */
 router.post('/google', (req, res) => {
@@ -18,12 +18,13 @@ router.post('/google', (req, res) => {
 
 /* Used to get a twilio token for IM */
 router.get('/twilio', (req, res) => {
-  var appName = 'TwilioChatDemo';
-  var identity = Math.random().toString();
+
+  var appName = 'Babelot';
+  var email = req.verifiedPayload.email;
   var deviceId = req.query.device;
 
   // Create a unique ID for the client on their current device
-  var endpointId = appName + ':' + identity + ':' + deviceId;
+  var endpointId = appName + ':' + email + ':' + deviceId;
 
   // Create a "grant" which enables a client to use IPM as a given user,
   // on a given device
@@ -41,12 +42,12 @@ router.get('/twilio', (req, res) => {
   );
 
   token.addGrant(ipmGrant);
-  token.identity = identity;
+  token.identity = email;
 
   // Serialize the token to a JWT string and include it in a JSON response
   // return res.send('Naila Nur')
   res.send({
-    identity: identity,
+    identity: email,
     token: token.toJwt()
   });
 });
