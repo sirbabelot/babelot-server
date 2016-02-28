@@ -11,7 +11,7 @@ node:
     - "8080:8080"
   volumes:
     - ./app:/usr/src/app
-    - /usr/src/app/node_modules
+    # - /usr/src/app/node_modules
   links:
     - pg
   environment:
