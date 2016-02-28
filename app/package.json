@@ -33,6 +33,7 @@
     "googleapis": "^2.1.7",
     "https": "1.0.0",
     "knex": "0.10.0",
+    "nodemon": "1.9.1",
     "pg": "4.4.6",
     "superagent": "^1.7.2",
     "twilio": "2.9.0"
