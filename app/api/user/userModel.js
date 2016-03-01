@@ -1,8 +1,10 @@
-var bookshelf = require(__base + 'config/connections.js');
+var Sequelize = require('sequelize');
+var sequelize = require(__base + 'config/connections.js');
 
 
-var User =  bookshelf.Model.extend({
-  tableName: 'users'
+var User = sequelize.define('users', {
+  email: Sequelize.STRING
 });
+
 
 module.exports = User;

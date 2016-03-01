@@ -1,5 +1,15 @@
 CREATE TABLE users (
-    email         varchar(85)
+  id SERIAL,
+  connections integer[],
+  email text,
+  PRIMARY KEY (id)
 );
 
-INSERT INTO users VALUES ('jzapata@uwo.ca')
+CREATE TABLE connections (
+  id SERIAL,
+  userA_id INTEGER REFERENCES users,
+  userB_id INTEGER REFERENCES users,
+  PRIMARY KEY (id)
+);
+
+INSERT INTO "users" (email) VALUES ('jzapata@uwo.ca');

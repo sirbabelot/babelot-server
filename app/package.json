@@ -8,7 +8,8 @@
   },
   "scripts": {
     "test": "npm test",
-    "start": "./node_modules/nodemon/bin/nodemon.js -L server --use_strict"
+    "start": "./node_modules/nodemon/bin/nodemon.js -L server --use_strict",
+    "debug": "node-debug server --use_strict"
   },
   "repository": {
     "type": "git",
@@ -33,8 +34,10 @@
     "googleapis": "^2.1.7",
     "https": "1.0.0",
     "knex": "0.10.0",
+    "node-inspector": "0.12.7",
     "nodemon": "1.9.1",
     "pg": "4.4.6",
+    "sequelize": "3.19.3",
     "superagent": "^1.7.2",
     "twilio": "2.9.0"
   }

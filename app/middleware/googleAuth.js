@@ -15,6 +15,7 @@ module.exports = {
     var id_token =  req.headers.authorization &&
         req.headers.authorization.split(/Bearer[\s\S]/)[1];
 
+
     if (id_token) {
       // Use the google API to verify the token agains their public key
       auth.verifyIdToken(id_token, process.env.GOOGLE_CLIENT_ID, (err, ticket) => {

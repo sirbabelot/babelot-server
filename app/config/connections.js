@@ -1,11 +1,18 @@
 'use strict';
-var knex = require('knex');
+var Sequelize = require('sequelize');
 
-var config = knex({
-  client: 'pg',
-  connection: "postgres://postgres:@172.17.0.2/postgres"
+var sequelize = new Sequelize('postgres', 'postgres', '', {
+  host: '172.17.0.2',
+  dialect: 'postgres',
+  pool: {
+    max: 5,
+    min: 0,
+    idle: 10000
+  },
+  define: {
+    createdAt: false,
+    updatedAt: false
+  }
 });
 
-var bookshelf = require('bookshelf')(config);
-
-module.exports = bookshelf;
+module.exports = sequelize;
