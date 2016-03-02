@@ -26,6 +26,7 @@
     "body-parser": "1.15.0",
     "bookshelf": "0.9.2",
     "co": "4.6.0",
+    "co-express": "1.2.1",
     "cors": "2.7.1",
     "dotenv": "2.0.0",
     "express": "^4.13.4",

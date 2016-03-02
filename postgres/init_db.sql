@@ -7,8 +7,8 @@ CREATE TABLE users (
 
 CREATE TABLE connections (
   id SERIAL,
-  userA_id INTEGER REFERENCES users,
-  userB_id INTEGER REFERENCES users,
+  user_a_id INTEGER REFERENCES users,
+  user_b_id INTEGER REFERENCES users,
   PRIMARY KEY (id)
 );
 
