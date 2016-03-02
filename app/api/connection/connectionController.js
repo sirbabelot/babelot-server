@@ -23,9 +23,10 @@ router.get('/:id', wrap(function* (req, res) {
 
 router.post('/', wrap(function* (req, res) {
 
-  let user_a_id = req.body.user_a_id;
-  let user_b_id = req.body.user_b_id;
-  var connections = yield Connection.addConnection(user_a_id, user_b_id);
+  let userAEmail = req.body.userAEmail;
+  let userBEmail = req.body.userBEmail;
+
+  var connections = yield Connection.addConnectionByEmail(userAEmail, userBEmail);
   res.send(connections);
 }));
 

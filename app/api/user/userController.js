@@ -8,18 +8,35 @@ var googleAuth = require(`${__base}/middleware/googleAuth.js`);
 
 
 /* All User routes first require a user to be logged in */
-// router.use(googleAuth.isAuthenticated);
+router.use(googleAuth.isAuthenticated);
 
 /**
- * Creates a user if it does not yet exist
+ * Retreieve a user by it's ID
+ */
+router.get('/', wrap(function *(req, res){
+    var user = yield User.getAll();
+    return res.send(user);
+}));
+
+/**
+ * Retreieve a user by it's ID
  */
 router.get('/:id', wrap(function *(req, res){
     var user = yield User.getById(req.params.id);
     if (user) return res.send(user);
 
     res.send(404, `No user with id ${req.params.id} was found`)
-  })
-);
+}));
+
+/** Retreives a user object based on Authorization header  */
+router.post('/login', wrap(function* (req, res){
+  var googleProfile = req.verifiedPayload;
+
+  var user = yield User.getByEmail(googleProfile.email);
+  if (user) return res.send(user);
+
+  res.send(404, `No user with those credentials was found`)
+}));
 
 /**
  * Creates a user if it does not yet exist

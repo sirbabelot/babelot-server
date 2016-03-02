@@ -1,5 +1,6 @@
 "use strict";
 var knex = require(`${__base}/config/connections.js`);
+var _ = require('lodash');
 
 
 class Connection {
@@ -8,8 +9,7 @@ class Connection {
   getAll() {
     var promise = knex
         .select('*')
-        .from('users');
-
+        .from('connections');
     return promise;
   }
 
@@ -30,6 +30,28 @@ class Connection {
     return promise;
   }
 
+  addConnectionByEmail(userAEmail, userBEmail) {
+    var promise = knex('users')
+      .where({
+        email: userAEmail
+      })
+      .orWhere({
+        email: userBEmail
+      })
+      .select('id')
+      .then(users => {
+        return knex('connections')
+          .insert({
+            user_a_id: users[0].id,
+            user_b_id: users[1].id
+          }).then(connections => {
+            console.log('lemmons' ,connections);
+            return connections
+          })
+      })
+      return promise
+  }
+
   /**
    * adds a connection to a user
    */
@@ -40,7 +62,6 @@ class Connection {
         user_b_id: 2
       })
       .then(connection => {
-        console.log(connection)
         return connection
       });
     return promise;

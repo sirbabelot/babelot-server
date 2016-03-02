@@ -19,6 +19,14 @@ class User {
     return promise;
   }
 
+  getAll() {
+    var promise = knex
+        .select('*')
+        .from('users');
+
+    return promise;
+  }
+
   /**
    *  Select an individual user by email adress
    *  @param {string} email - users email

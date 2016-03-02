@@ -1,6 +1,5 @@
 CREATE TABLE users (
   id SERIAL,
-  connections integer[],
   email text,
   PRIMARY KEY (id)
 );
