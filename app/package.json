@@ -7,7 +7,7 @@
     "node": "5.3.0"
   },
   "scripts": {
-    "test": "npm test",
+    "test": "mocha --reporter spec './api/**/*.test.js' ",
     "start": "./node_modules/nodemon/bin/nodemon.js -L server --use_strict",
     "debug": "node-debug server --use_strict"
   },

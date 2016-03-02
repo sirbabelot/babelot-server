@@ -4,6 +4,7 @@ var knex = require(`${__base}/config/connections.js`);
 
 class User {
 
+
   /**
    * Creates a new user in the database
    * @param {string} email - a unique email address
@@ -40,6 +41,7 @@ class User {
       .select('*')
       .limit(1)
       .then(users => {
+        console.log(users)
         return users[0]
       });
     return promise;
@@ -51,7 +53,7 @@ class User {
    *  @return {promise} containing a user object if found, undefined otherwise
    */
   getById(id) {
-    var promise = knex('users')
+    return knex('users')
       .where({
         id: id
       })
@@ -60,7 +62,14 @@ class User {
       .then(users => {
         return users[0]
       });
-    return promise;
+  }
+
+  getConnections(id) {
+    return knex
+      .select('id', 'email')
+      .whereNot({ id: id })
+      .from('users')
+      .fullOuterJoin('connections', 'users.id', 'connections.user_b_id');
   }
 }
 

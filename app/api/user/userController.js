@@ -28,11 +28,25 @@ router.get('/:id', wrap(function *(req, res){
     res.send(404, `No user with id ${req.params.id} was found`)
 }));
 
-/** Retreives a user object based on Authorization header  */
-router.post('/login', wrap(function* (req, res){
-  var googleProfile = req.verifiedPayload;
+/**
+ * Retreieve a list of connections for a user
+ */
+ router.get('/:id/connection', wrap(function* (req, res) {
+   var connections = yield User.getConnections(req.params.id);
+   res.send(connections);
+ }));
 
-  var user = yield User.getByEmail(googleProfile.email);
+/** Retreives a user object based on Authorization header
+ * Create it if it doesnt exist
+ */
+router.post('/login', wrap(function* (req, res){
+  let googleProfile = req.verifiedPayload;
+  let email = googleProfile.email;
+
+  let user = yield User.getByEmail(email);
+  if (user) return res.send(user);
+
+  user = yield User.createNewUser(email)
   if (user) return res.send(user);
 
   res.send(404, `No user with those credentials was found`)

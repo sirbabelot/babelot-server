@@ -27,7 +27,8 @@ router.post('/', wrap(function* (req, res) {
   let userBEmail = req.body.userBEmail;
 
   var connections = yield Connection.addConnectionByEmail(userAEmail, userBEmail);
-  res.send(connections);
+  if(connections) return res.send(connections);
+  res.send(404, 'User not found')
 }));
 
 

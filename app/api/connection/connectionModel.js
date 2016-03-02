@@ -38,14 +38,14 @@ class Connection {
       .orWhere({
         email: userBEmail
       })
-      .select('id')
+      .select('*')
       .then(users => {
+        if(users.length < 2) return null
         return knex('connections')
           .insert({
             user_a_id: users[0].id,
             user_b_id: users[1].id
           }).then(connections => {
-            console.log('lemmons' ,connections);
             return connections
           })
       })
