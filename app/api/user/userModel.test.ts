@@ -47,8 +47,16 @@ describe('User', ()=> {
         })
   })
 
-  describe('findOrCreate', ()=> {
+  describe('findAll', ()=> {
+    it('should retrieve all the users from the database', tryCatch(async ()=> {
+      await knex('users').insert({id: 'testId'});
+      var users = await user.findAll();
+      expect(users.length).to.equal(1);
+      expect(users[0].id).to.equal('testId');
+    });
+  });
 
+  describe('findOrCreate', ()=> {
     it('should create a user if none exists with the given id', tryCatch(async ()=> {
       var users = await knex('users').select('*');
       expect(users.length).to.equal(0);
@@ -65,6 +73,56 @@ describe('User', ()=> {
       expect(res.created).to.equal(false);
       expect(res.user.id).to.equal('testId');
     }));
+  });
 
-  })
+  describe('addConnection', ()=> {
+
+    beforeEach(tryCatch(async ()=>{
+      await knex('users').insert({ id: 'idA' });
+      await knex('users').insert({ id: 'idB' });
+    }))
+
+    it('should add a connection if it doesnt exist', tryCatch(async ()=> {
+      var didAdd = await user.addConnection('idA', 'idB');
+      expect(didAdd).to.equal(true);
+      var connections await knex('connections').select('*');
+      expect(connections.length).to.equal(1);
+      expect(connections[0].user_a_id).to.equal('idA');
+      expect(connections[0].user_b_id).to.equal('idB');
+    }))
+
+    it('should not insert a duplicate connection', tryCatch(async ()=> {
+      await user.addConnection('idA', 'idB');
+      var didAdd = await user.addConnection('idA', 'idB');
+      expect(didAdd).to.equal(false);
+      var connections await knex('connections').select('*');
+      expect(connections.length).to.equal(1);
+      expect(connections[0].user_a_id).to.equal('idA');
+      expect(connections[0].user_b_id).to.equal('idB');
+    }))
+  });
+
+  describe('getConnections', ()=> {
+
+    beforeEach(tryCatch(async ()=>{
+      await knex('users').insert({ id: 'idA' });
+      await knex('users').insert({ id: 'idB' });
+    }))
+
+    it('should get all a user\'s connections', tryCatch(async ()=> {
+      await user.addConnection('idA', 'idB');
+      var connections = await user.getConnections('idA');
+      expect(connections.length).to.equal(1);
+      expect(connections[0].id).to.equal('idB');
+
+      var connections = await user.getConnections('idB');
+      expect(connections.length).to.equal(1);
+      expect(connections[0].id).to.equal('idA');
+    });
+
+    it('should return an empty array if no connections exist', tryCatch(async ()=> {
+      var connections = await user.getConnections('idA');
+      expect(connections.length).to.equal(0);
+    });
+  });
 });

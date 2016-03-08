@@ -4,7 +4,9 @@ var co = require('co');
 var url = require('url');
 var _ = require('lodash');
 var router =  express.Router();
+var knex = require(`../../config/connections.js`);
 var User = require('./userModel.js');
+var user = new User(knex);
 var wrap = require('co-express');
 var googleAuth = require(`${__base}/middleware/googleAuth.js`);
 
@@ -17,8 +19,8 @@ var googleAuth = require(`${__base}/middleware/googleAuth.js`);
  * Retreieve a user by it's ID
  */
 router.get('/:id', wrap(function *(req, res){
-    // var user = yield User.findOrCreate(req.params.id);
-    return res.send(user);
+    var userData = yield user.findOrCreate(req.params.id);
+    return res.send(userData);
 }));
 
 /** Retreives a user object based on Authorization header
