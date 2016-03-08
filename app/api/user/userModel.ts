@@ -7,23 +7,22 @@ class User {
 
   // Pass in knex rather than require it
   // to make testing easier
-  constructor(knex) {
-    this.knex = knex;
-  }
+  constructor(public knex: any) {}
 
-
-  findOrCreate(id) {
-    var res = {};
-
-    return this.knex('users')
-      .returning('*')
-      .insert({
-        id: id
-      }).then(users => {
-        res.created = true;
-        res.user = users[0];
-        return res;
-      })
+  async findOrCreate(id) {
+    let res = {};
+    let users;
+    // finding an existing user
+    users = await this.knex('users').select('*').where('id', id);
+    if (users.length > 0)
+      res.created = false;
+    else {
+      await this.knex('users').insert({ id: id });
+      users = await this.knex('users').select('*').where('id', id);
+      res.created = true;
+    }
+    res.user = users[0];
+    return res;
   }
 
 

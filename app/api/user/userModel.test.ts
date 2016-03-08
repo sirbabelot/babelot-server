@@ -1,8 +1,18 @@
 var expect = require('chai').expect
 var User = require('./userModel.js');
-var coMocha = require('mocha-co')
 var knex, user;
 
+// Helper function to poropgate errors to mocha's done
+var tryCatch = (fn) => {
+  return async (done) => {
+    try {
+      await fn();
+      done();
+    } catch (err) {
+      done(err);
+    }
+  };
+};
 
 function initKnex(dbConnection) {
   return require('knex')({
@@ -13,7 +23,7 @@ function initKnex(dbConnection) {
 
 describe('User', ()=> {
 
-  beforeEach((done) => {
+  beforeEach(async (done) => {
     var dbConnection = {
       // the address of the docker container
       host: '192.168.99.100',
@@ -23,34 +33,38 @@ describe('User', ()=> {
 
     knex = initKnex(dbConnection);
     user = new User(knex);
-    knex.schema.dropTableIfExists('connections')
-      .then(() => knex.schema.dropTableIfExists('users'))
-      .then(() => {
-        return knex.schema.createTable('users', function (table) {
+    await knex.schema.dropTableIfExists('connections')
+    await knex.schema.dropTableIfExists('users')
+    await knex.schema.createTable('users', function (table) {
           table.string('id').primary();
           table.string('email');
         })
-      })
-      .then(()=> {
-        return knex.schema.createTable('connections', function (table) {
+    await knex.schema.createTable('connections', function (table) {
             table.string('user_a_id');
             table.string('user_b_id');
             table.primary(['user_a_id', 'user_b_id']);
             done()
         })
-      })
   })
 
   describe('findOrCreate', ()=> {
 
-    it('should create a user if none exists with the given id', async function (done) {
-        // var users = yield knex('users').select('*');
-        // expect(0).to.equal(2)
-        console.log('oko')
-        // var res = yield user.findOrCreate('testId');
-        // expect(res.created).to.equal(true);
-        // expect(res.user.id).to.equal('testIds');
-        done();
-    });
+    it('should create a user if none exists with the given id', tryCatch(async ()=> {
+      var users = await knex('users').select('*');
+      expect(users.length).to.equal(0);
+      var res = await user.findOrCreate('testId');
+      expect(res.created).to.equal(true);
+      expect(res.user.id).to.equal('testId');
+    }));
+
+    it('should find a user if it has already been created', tryCatch(async ()=> {
+      await knex('users').insert({ id: 'testId' });
+      var users = await knex('users').select('*');
+      expect(users.length).to.equal(1);
+      var res = await user.findOrCreate('testId');
+      expect(res.created).to.equal(false);
+      expect(res.user.id).to.equal('testId');
+    }));
+
   })
 });
