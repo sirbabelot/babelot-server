@@ -28,7 +28,6 @@ class User {
     return res;
   }
 
-
   /////////////////////////////////////////////////////////////////////
   //////////////////////////// CONNECTIONS ////////////////////////////
   /////////////////////////////////////////////////////////////////////
@@ -54,15 +53,13 @@ class User {
     return connections;
   }
 
-  removeConnectionById(userAId, userBId){
-    return co(function* () {
-      return knex('connections')
-        .where('user_a_id', userAId)
-        .orWhere('user_a_id', userBId)
-        .orWhere('user_b_id', userAId)
-        .orWhere('user_b_id', userBId)
-        .del()
-    });
+  async removeConnection(userAId, userBId){
+    return this.knex('connections')
+      .where('user_a_id', userAId)
+      .orWhere('user_a_id', userBId)
+      .orWhere('user_b_id', userAId)
+      .orWhere('user_b_id', userBId)
+      .del()
   }
 }
 

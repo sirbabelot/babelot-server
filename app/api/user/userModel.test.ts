@@ -103,8 +103,7 @@ describe('User', ()=> {
   });
 
   describe('getConnections', ()=> {
-
-    beforeEach(tryCatch(async ()=>{
+    beforeEach(tryCatch(async ()=> {
       await knex('users').insert({ id: 'idA' });
       await knex('users').insert({ id: 'idB' });
     }))
@@ -123,6 +122,28 @@ describe('User', ()=> {
     it('should return an empty array if no connections exist', tryCatch(async ()=> {
       var connections = await user.getConnections('idA');
       expect(connections.length).to.equal(0);
+    });
+  });
+
+  describe('removeConnection', ()=> {
+
+    beforeEach(tryCatch(async ()=> {
+      await knex('users').insert({ id: 'idA' });
+      await knex('users').insert({ id: 'idB' });
+    }));
+
+    it('should remove the exact connection from the db', tryCatch(async ()=> {
+      await user.addConnection('idA', 'idB');
+      await user.removeConnection('idA', 'idB');
+      var connections = await knex('connections').select('*');
+      expect(connections.length).to.equal(0)
+    });
+
+    it.only('should remove the opposite pair connection from the db', tryCatch(async ()=> {
+      await user.addConnection('idA', 'idB');
+      await user.removeConnection('idB', 'idA');
+      var connections = await knex('connections').select('*');
+      expect(connections.length).to.equal(0)
     });
   });
 });

@@ -1,13 +1,13 @@
 CREATE TABLE users (
-  id SERIAL,
-  email text,
+  id TEXT,
+  email TEXT,
   PRIMARY KEY (id)
 );
 
 CREATE TABLE connections (
-  user_a_id INTEGER REFERENCES users,
-  user_b_id INTEGER REFERENCES users,
+  user_a_id TEXT REFERENCES users,
+  user_b_id TEXT REFERENCES users,
   PRIMARY KEY (user_a_id, user_b_id)
 );
 
-INSERT INTO "users" (email) VALUES ('jzapata@uwo.ca');
+INSERT INTO "users" (id) VALUES ('jzapata');
