@@ -1,9 +1,32 @@
 "use strict";
-var knex = require(`${__base}/config/connections.js`);
+var knex = require(`../../config/connections.js`);
 var co = require('co');
 
 
 class User {
+
+  // Pass in knex rather than require it
+  // to make testing easier
+  constructor(knex) {
+    this.knex = knex;
+  }
+
+
+  findOrCreate(id) {
+    var res = {};
+
+    return this.knex('users')
+      .returning('*')
+      .insert({
+        id: id
+      }).then(users => {
+        res.created = true;
+        res.user = users[0];
+        return res;
+      })
+  }
+
+
   /**
    * Creates a new user in the database
    * @param {string} email - a unique email address
@@ -114,4 +137,4 @@ class User {
 }
 
 
-module.exports = new User();
+module.exports = User;

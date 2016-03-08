@@ -9,7 +9,8 @@ var router = express.Router();
 var auth = new google.auth.OAuth2('176803199914-d0icptds3ur0mrcj20hadptifmk5f4f4.apps.googleusercontent.com', 'ubcxP9IdVjT3DhaEn4CZsmZg', 'http://localhost:3000/redirect')
 
 /* All token routes first require a user to be logged in */
-router.use(googleAuth.isAuthenticated);
+// router.use(googleAuth.isAuthenticated);
+
 
 /* Used for user oAuth2 through google accounts */
 router.post('/google', (req, res) => {
