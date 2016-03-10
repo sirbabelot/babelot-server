@@ -1,7 +1,7 @@
 "use strict";
 var knex = require(`../../config/connections.js`);
 var co = require('co');
-
+var _ = require('lodash');
 
 class User {
 
@@ -13,53 +13,101 @@ class User {
     return this.knex('users').select('*');
   }
 
-  async findOrCreate(id) {
+  async findOne(id) {
+    return this.knex('users').select('*').where('id', id)
+        .then((users)=> users[0]);
+  }
+
+  async findOrCreate(options) {
     let res = {};
     let users;
+    let acceptedAttrs = ['id', 'nickname', 'img_url'];
+
     // finding an existing user
-    users = await this.knex('users').select('*').where('id', id);
+    users = await this.knex('users').select('*').where('id', options.id);
     if (users.length > 0) res.created = false;
     else {
-      await this.knex('users').insert({ id: id });
-      users = await this.knex('users').select('*').where('id', id);
+      // Format a user object the DB can handle
+      let userToAdd = {};
+      acceptedAttrs.forEach((attr)=> {
+        if (_.has(options, attr)) {
+          userToAdd[attr] = options[attr];
+        }
+      });
+      // Attempt to create the new user in the DB
+      await this.knex('users').insert(userToAdd);
+      users = await this.knex('users').select('*').where('id', userToAdd.id);
       res.created = true;
     }
     res.user = users[0];
     return res;
   }
 
-  /////////////////////////////////////////////////////////////////////
   //////////////////////////// CONNECTIONS ////////////////////////////
-  /////////////////////////////////////////////////////////////////////
-
+  ///
   async addConnection(id1, id2) {
-    try {
-      await this.knex('connections').insert({
+    var res = await this.knex('connections')
+      .returning('*')
+      .insert({
         user_a_id: id1,
-        user_b_id: id2
-      });
-    } catch(e) { return false; }
-    return true;
+        user_b_id: knex('users').select('id').where('id', id2)
+      })
+      .catch((e)=> {return e})
+    return res;
   }
 
+
+  // TODO look into writing this without using "raw" queries
   async getConnections(userId) {
-    var connections = await this.knex.select('id', 'email')
-        .from('connections')
-        .innerJoin('users', function(){
-          this.on('users.id', '=', 'connections.user_b_id')
-            .orOn('users.id', '=', 'connections.user_a_id')
-        })
-        .whereNot({id: userId})
+    var connections = await this.knex.raw(`
+      SELECT id, email, nickname, img_url FROM (
+        SELECT * FROM connections
+        WHERE user_a_id='${userId}'
+        OR user_b_id='${userId}'
+    ) AS p INNER JOIN users ON p.user_a_id=users.id OR p.user_b_id=users.id
+    WHERE id != '${userId}'
+    `);
+
+    connections = _.uniq(connections.rows, 'id');
+
+
+    // var dripple = await knex.select('*')
+    //     .from(function() {
+    //       this.select('*').from('connections')
+    //       .where({ user_a_id: userId })
+    //       .orWhere({ user_b_id: userId })
+    //       .as('ok')
+    //     })
+    //       .as('tmp')
+    //     .innerJoin(function() {
+    //       this.select('*').from('users')
+    //     })
+
     return connections;
   }
 
-  async removeConnection(userAId, userBId){
-    return this.knex('connections')
-      .where('user_a_id', userAId)
-      .orWhere('user_a_id', userBId)
-      .orWhere('user_b_id', userAId)
-      .orWhere('user_b_id', userBId)
+  async removeConnection(userAId, userBId) {
+    var res = await this.knex('connections')
+      .where({
+        'user_a_id': userAId,
+        'user_b_id': userBId,
+      })
+      .orWhere({
+        'user_a_id': userBId,
+        'user_b_id': userAId,
+      })
       .del()
+      .catch((e)=> {return e})
+    return res;
+  }
+
+  async search(params) {
+    if (params.email) {
+      var res = await knex('users')
+          .select('*')
+          .where('email', 'like', `%${params.email}%`)
+      return res;
+    }
   }
 }
 

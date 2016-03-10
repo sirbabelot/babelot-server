@@ -1,6 +1,8 @@
 CREATE TABLE users (
   id TEXT,
   email TEXT,
+  nickname TEXT,
+  img_url TEXT,
   PRIMARY KEY (id)
 );
 

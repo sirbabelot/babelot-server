@@ -8,76 +8,78 @@ var knex = require(`../../config/connections.js`);
 var User = require('./userModel.js');
 var user = new User(knex);
 var wrap = require('co-express');
-var googleAuth = require(`${__base}/middleware/googleAuth.js`);
+var jwt = require('express-jwt');
 
 
 /* All User routes first require a user to be logged in */
 // router.use(googleAuth.isAuthenticated);
+//
+var authenticate = jwt({
+  secret: new Buffer(process.env.AUTH0_CLIENT_SECRET, 'base64'),
+  audience: process.env.AUTH0_CLIENT_ID
+});
 
+router.use(authenticate);
+
+/**
+ * Get minimal data on all users
+ */
+router.get('/graph/', async (req, res)=> {
+    var users = await user.findAll();
+    return res.send(users);
+});
 
 /**
  * Retreieve a user by it's ID
  */
-router.get('/:id', wrap(function *(req, res){
-    var userData = yield user.findOrCreate(req.params.id);
-    return res.send(userData);
-}));
+router.get('/graph/:id', async (req, res)=> {
+    var userData = await user.findOne(req.params.id);
+    if (userData) return res.send(userData);
+    res.send(404,
+        `No such user exists. They can be created at
+            POST /users/graph/${req.params.id}`);
+});
 
-/** Retreives a user object based on Authorization header
- * Create it if it doesnt exist
- */
-router.post('/login', wrap(function* (req, res){
-  let googleProfile = req.verifiedPayload;
-  let email = googleProfile.email;
+router.post('/graph', async (req, res)=> {
+  let requiredKeys = ['id', 'nickname', 'img_url'];
+  req.body = JSON.parse(req.body);
+  var isComposed = _.every(requiredKeys, _.partial(_.has, req.body));
+  if (!isComposed) return res.send(400, `Missing one or more required keys: ${requiredKeys}`)
+  var userData = await user.findOrCreate({
+      id: req.body.id,
+      nickname: req.body.nickname,
+      img_url: req.body.img_url
+    });
+  return res.send(userData);
+});
 
-  let user = yield User.getByEmail(email);
-  if (user) return res.send(user);
+// TODO fix the routes so this is part of graph
+router.get('/search/', async (req, res)=> {
+  var email = req.query.email;
+  var users = await user.search({email});
+  res.send(users);
+});
 
-  user = yield User.createNewUser(email)
-  if (user) return res.send(user);
+router.get('/me/', async (req, res)=> {
+  var userData = await user.findOne(req.user.sub);
+  return res.send(userData);
+});
 
-  res.send(404, `No user with those credentials was found`)
-}));
+router.get('/me/contacts', async (req, res)=> {
+  var connections = await user.getConnections(req.user.sub);
+  res.send(connections);
+});
 
-/**
- * Retreieve a user by it's ID
- */
-router.get('/:id', wrap(function *(req, res){
-    var user = yield User.getById(req.params.id);
-    if (user) return res.send(user);
+router.post('/me/contacts', async (req, res)=> {
+  req.body = JSON.parse(req.body)
+  var connection =  await user.addConnection(req.user.sub, req.body.id);
+  return res.send(connection);
+});
 
-    res.send(404, `No user with id ${req.params.id} was found`)
-}));
-
-/////////////////////////////////////////////////////////////////////
-//////////////////////////// CONNECTIONS ////////////////////////////
-/////////////////////////////////////////////////////////////////////
-
-/**
- * Retreieve a list of connections for a user
- */
- router.get('/:id/connection', wrap(function* (req, res) {
-   var connections = yield User.getConnections(req.params.id);
-   res.send(connections);
- }));
-
-router.post('/:id/connection', wrap(function *(req, res){
-    let googleProfile = req.verifiedPayload;
-    let connectionEmail = req.body.connectionEmail;
-    var user = yield User.addConnectionByEmail(googleProfile.email, connectionEmail);
-
-    // Forward the error message
-    if(!_.has(user, 'error')) return res.send(user);
-    res.send(404, user.error);
-  })
-);
-
-router.delete('/:id/connection', wrap(function* (req, res) {
-  let googleProfile = req.verifiedPayload;
-  let connectionId = req.query.connectionId;
-  var numDeleted = yield User.removeConnectionById(req.params.id, connectionId);
-  res.send(200, numDeleted);
-}))
+router.delete('/me/contacts/:id', async (req, res)=> {
+  var deleted = await user.removeConnection(req.user.sub, req.params.id);
+  return res.send(`${deleted}`);
+});
 
 
 module.exports = router;

@@ -21,7 +21,7 @@ function initKnex(dbConnection) {
   });
 }
 
-describe('User', ()=> {
+describe('UserModel', ()=> {
 
   beforeEach(async (done) => {
     var dbConnection = {
@@ -45,7 +45,7 @@ describe('User', ()=> {
             table.primary(['user_a_id', 'user_b_id']);
             done()
         })
-  })
+  });
 
   describe('findAll', ()=> {
     it('should retrieve all the users from the database', tryCatch(async ()=> {
@@ -53,7 +53,7 @@ describe('User', ()=> {
       var users = await user.findAll();
       expect(users.length).to.equal(1);
       expect(users[0].id).to.equal('testId');
-    });
+    }));
   });
 
   describe('findOrCreate', ()=> {
@@ -85,17 +85,17 @@ describe('User', ()=> {
     it('should add a connection if it doesnt exist', tryCatch(async ()=> {
       var didAdd = await user.addConnection('idA', 'idB');
       expect(didAdd).to.equal(true);
-      var connections await knex('connections').select('*');
+      var connections = await knex('connections').select('*');
       expect(connections.length).to.equal(1);
       expect(connections[0].user_a_id).to.equal('idA');
       expect(connections[0].user_b_id).to.equal('idB');
-    }))
+    }));
 
     it('should not insert a duplicate connection', tryCatch(async ()=> {
       await user.addConnection('idA', 'idB');
       var didAdd = await user.addConnection('idA', 'idB');
       expect(didAdd).to.equal(false);
-      var connections await knex('connections').select('*');
+      var connections = await knex('connections').select('*');
       expect(connections.length).to.equal(1);
       expect(connections[0].user_a_id).to.equal('idA');
       expect(connections[0].user_b_id).to.equal('idB');
@@ -106,7 +106,7 @@ describe('User', ()=> {
     beforeEach(tryCatch(async ()=> {
       await knex('users').insert({ id: 'idA' });
       await knex('users').insert({ id: 'idB' });
-    }))
+    }));
 
     it('should get all a user\'s connections', tryCatch(async ()=> {
       await user.addConnection('idA', 'idB');
@@ -117,12 +117,12 @@ describe('User', ()=> {
       var connections = await user.getConnections('idB');
       expect(connections.length).to.equal(1);
       expect(connections[0].id).to.equal('idA');
-    });
+    }));
 
     it('should return an empty array if no connections exist', tryCatch(async ()=> {
       var connections = await user.getConnections('idA');
       expect(connections.length).to.equal(0);
-    });
+    }));
   });
 
   describe('removeConnection', ()=> {
@@ -134,16 +134,20 @@ describe('User', ()=> {
 
     it('should remove the exact connection from the db', tryCatch(async ()=> {
       await user.addConnection('idA', 'idB');
-      await user.removeConnection('idA', 'idB');
-      var connections = await knex('connections').select('*');
-      expect(connections.length).to.equal(0)
-    });
+      var numberRemoved = await user.removeConnection('idA', 'idB');
+      expect(numberRemoved).to.equal(1);
+    }));
 
-    it.only('should remove the opposite pair connection from the db', tryCatch(async ()=> {
+    it('should remove the opposite pair connection from the db', tryCatch(async ()=> {
       await user.addConnection('idA', 'idB');
-      await user.removeConnection('idB', 'idA');
-      var connections = await knex('connections').select('*');
-      expect(connections.length).to.equal(0)
-    });
+      var numberRemoved = await user.removeConnection('idA', 'idB');
+      expect(numberRemoved).to.equal(1);
+    }));
+
+    it('should not remove non existant pairs', tryCatch(async ()=> {
+      await user.addConnection('idA', 'idB');
+      var numberRemoved = await user.removeConnection('gibberish', 'idB');
+      expect(numberRemoved).to.equal(0);
+    }));
   });
 });

@@ -19,10 +19,12 @@ var PORT = process.env.PORT || 8080;
 app.use(cors);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.raw());
+app.use(bodyParser.text());
 
 
 // ROUTERS
-app.use('/user', userController);
+app.use('/users', userController);
 app.use('/connection', connectionController);
 app.use('/token', tokenController);
 
