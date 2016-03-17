@@ -2,12 +2,11 @@
 var knex = require(`../../config/connections.js`);
 var co = require('co');
 var _ = require('lodash');
+var knex = require(`../../config/connections.js`);
 
 class User {
 
-  // Pass in knex rather than require it
-  // to make testing easier
-  constructor(public knex: any) {}
+  public knex:any = knex;
 
   async findAll() {
     return this.knex('users').select('*');
@@ -21,7 +20,7 @@ class User {
   async findOrCreate(options) {
     let res = {};
     let users;
-    let acceptedAttrs = ['id', 'nickname', 'img_url'];
+    let acceptedAttrs = ['id', 'nickname', 'img_url', 'email'];
 
     // finding an existing user
     users = await this.knex('users').select('*').where('id', options.id);
@@ -43,8 +42,17 @@ class User {
     return res;
   }
 
+  //////////////////////////// REQUESTS ////////////////////////////
+
+  async addRequest(toId, fromId) {
+      return await knex.raw(`
+        UPDATE users
+        SET connection_requests=connection_requests||\'{${fromId}}\'
+        WHERE (id=\'${toId}\')`);
+  }
+
   //////////////////////////// CONNECTIONS ////////////////////////////
-  ///
+
   async addConnection(id1, id2) {
     var res = await this.knex('connections')
       .returning('*')
@@ -69,19 +77,6 @@ class User {
     `);
 
     connections = _.uniq(connections.rows, 'id');
-
-
-    // var dripple = await knex.select('*')
-    //     .from(function() {
-    //       this.select('*').from('connections')
-    //       .where({ user_a_id: userId })
-    //       .orWhere({ user_b_id: userId })
-    //       .as('ok')
-    //     })
-    //       .as('tmp')
-    //     .innerJoin(function() {
-    //       this.select('*').from('users')
-    //     })
 
     return connections;
   }
@@ -112,4 +107,4 @@ class User {
 }
 
 
-module.exports = User;
+module.exports = new User();

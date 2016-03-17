@@ -46,6 +46,7 @@
     "nodemon": "1.9.1",
     "pg": "4.4.6",
     "sequelize": "3.19.3",
+    "socket.io": "1.4.5",
     "superagent": "^1.7.2",
     "twilio": "2.9.0",
     "typescript": "1.8.7",

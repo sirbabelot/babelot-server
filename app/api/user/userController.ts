@@ -4,9 +4,7 @@ var co = require('co');
 var url = require('url');
 var _ = require('lodash');
 var router =  express.Router();
-var knex = require(`../../config/connections.js`);
-var User = require('./userModel.js');
-var user = new User(knex);
+var user = require('./userModel.js');
 var wrap = require('co-express');
 var jwt = require('express-jwt');
 
@@ -40,16 +38,14 @@ router.get('/graph/:id', async (req, res)=> {
             POST /users/graph/${req.params.id}`);
 });
 
+
+/* Creates a User in the DB */
 router.post('/graph', async (req, res)=> {
-  let requiredKeys = ['id', 'nickname', 'img_url'];
+  let requiredKeys = ['id', 'nickname', 'img_url', 'email'];
   req.body = JSON.parse(req.body);
   var isComposed = _.every(requiredKeys, _.partial(_.has, req.body));
-  if (!isComposed) return res.send(400, `Missing one or more required keys: ${requiredKeys}`)
-  var userData = await user.findOrCreate({
-      id: req.body.id,
-      nickname: req.body.nickname,
-      img_url: req.body.img_url
-    });
+  if (!isComposed) return res.send(400, `Missing one or more required keys: ${requiredKeys}`);
+  var userData = await user.findOrCreate(req.body);
   return res.send(userData);
 });
 

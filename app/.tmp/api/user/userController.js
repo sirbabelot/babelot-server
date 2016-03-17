@@ -12,9 +12,7 @@ var co = require('co');
 var url = require('url');
 var _ = require('lodash');
 var router = express.Router();
-var knex = require(`../../config/connections.js`);
-var User = require('./userModel.js');
-var user = new User(knex);
+var user = require('./userModel.js');
 var wrap = require('co-express');
 var jwt = require('express-jwt');
 var authenticate = jwt({
@@ -34,16 +32,12 @@ router.get('/graph/:id', (req, res) => __awaiter(this, void 0, void 0, function*
             POST /users/graph/${req.params.id}`);
 }));
 router.post('/graph', (req, res) => __awaiter(this, void 0, void 0, function* () {
-    let requiredKeys = ['id', 'nickname', 'img_url'];
+    let requiredKeys = ['id', 'nickname', 'img_url', 'email'];
     req.body = JSON.parse(req.body);
     var isComposed = _.every(requiredKeys, _.partial(_.has, req.body));
     if (!isComposed)
         return res.send(400, `Missing one or more required keys: ${requiredKeys}`);
-    var userData = yield user.findOrCreate({
-        id: req.body.id,
-        nickname: req.body.nickname,
-        img_url: req.body.img_url
-    });
+    var userData = yield user.findOrCreate(req.body);
     return res.send(userData);
 }));
 router.get('/search/', (req, res) => __awaiter(this, void 0, void 0, function* () {

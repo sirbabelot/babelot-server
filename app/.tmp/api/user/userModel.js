@@ -10,8 +10,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 var knex = require(`../../config/connections.js`);
 var co = require('co');
 var _ = require('lodash');
+var knex = require(`../../config/connections.js`);
 class User {
-    constructor(knex) {
+    constructor() {
         this.knex = knex;
     }
     findAll() {
@@ -29,7 +30,7 @@ class User {
         return __awaiter(this, void 0, void 0, function* () {
             let res = {};
             let users;
-            let acceptedAttrs = ['id', 'nickname', 'img_url'];
+            let acceptedAttrs = ['id', 'nickname', 'img_url', 'email'];
             users = yield this.knex('users').select('*').where('id', options.id);
             if (users.length > 0)
                 res.created = false;
@@ -46,6 +47,14 @@ class User {
             }
             res.user = users[0];
             return res;
+        });
+    }
+    addRequest(toId, fromId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield knex.raw(`
+        UPDATE users
+        SET connection_requests=connection_requests||\'{${fromId}}\'
+        WHERE (id=\'${toId}\')`);
         });
     }
     addConnection(id1, id2) {
@@ -101,4 +110,4 @@ class User {
         });
     }
 }
-module.exports = User;
+module.exports = new User();
