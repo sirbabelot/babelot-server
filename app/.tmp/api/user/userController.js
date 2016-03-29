@@ -62,4 +62,12 @@ router.delete('/me/contacts/:id', (req, res) => __awaiter(this, void 0, void 0, 
     var deleted = yield user.removeConnection(req.user.sub, req.params.id);
     return res.send(`${deleted}`);
 }));
+router.get('/me/requests', (req, res) => __awaiter(this, void 0, void 0, function* () {
+    var requests = yield user.getRequests(req.user.sub);
+    res.send(requests);
+}));
+router.delete('/me/requests/:fromId', (req, res) => __awaiter(this, void 0, void 0, function* () {
+    var isRemoved = yield user.removeRequest(req.user.sub, req.params.fromId);
+    res.send(isRemoved);
+}));
 module.exports = router;

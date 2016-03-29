@@ -9,9 +9,6 @@ var wrap = require('co-express');
 var jwt = require('express-jwt');
 
 
-/* All User routes first require a user to be logged in */
-// router.use(googleAuth.isAuthenticated);
-//
 var authenticate = jwt({
   secret: new Buffer(process.env.AUTH0_CLIENT_SECRET, 'base64'),
   audience: process.env.AUTH0_CLIENT_ID
@@ -75,6 +72,16 @@ router.post('/me/contacts', async (req, res)=> {
 router.delete('/me/contacts/:id', async (req, res)=> {
   var deleted = await user.removeConnection(req.user.sub, req.params.id);
   return res.send(`${deleted}`);
+});
+
+router.get('/me/requests', async (req, res)=> {
+  var requests = await user.getRequests(req.user.sub);
+  res.send(requests);
+});
+
+router.delete('/me/requests/:fromId', async (req, res)=> {
+  var isRemoved = await user.removeRequest(req.user.sub, req.params.fromId);
+  res.send(isRemoved);
 });
 
 

@@ -12,7 +12,7 @@ class User {
     return this.knex('users').select('*');
   }
 
-  async findOne(id) {
+  async findOne(id, options) {
     return this.knex('users').select('*').where('id', id)
         .then((users)=> users[0]);
   }
@@ -51,6 +51,27 @@ class User {
         WHERE (id=\'${toId}\')`);
   }
 
+  async getRequests(toId) {
+    return this.knex.raw(`
+      SELECT id, email, nickname, img_url FROM users AS requesters
+        JOIN
+          ( SELECT connection_requests
+            FROM users
+            WHERE id='${toId}'
+          ) AS me
+        ON  requesters.id = ANY (me.connection_requests)`)
+      .then((res)=>res.rows)
+  }
+
+  async removeRequest(toId, fromId) {
+    return this.knex.raw(`
+      UPDATE "users" SET
+      "connection_requests"= (
+      SELECT array_remove("connection_requests", '${fromId}') FROM "users" WHERE id='${toId}'
+      )
+      WHERE id='${toId}'`);
+  }
+
   //////////////////////////// CONNECTIONS ////////////////////////////
 
   async addConnection(id1, id2) {
@@ -72,8 +93,9 @@ class User {
         SELECT * FROM connections
         WHERE user_a_id='${userId}'
         OR user_b_id='${userId}'
-    ) AS p INNER JOIN users ON p.user_a_id=users.id OR p.user_b_id=users.id
-    WHERE id != '${userId}'
+        ) AS p
+        INNER JOIN users ON p.user_a_id=users.id OR p.user_b_id=users.id
+        WHERE id != '${userId}'
     `);
 
     connections = _.uniq(connections.rows, 'id');
