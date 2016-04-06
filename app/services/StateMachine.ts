@@ -1,7 +1,7 @@
 "use strict";
 
 /**
- * The state machine class
+ * The StateMachine class
  * The constructor takes a config object 
  * as described in the interface Config
  * 
