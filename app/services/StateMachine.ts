@@ -1,5 +1,16 @@
 "use strict";
 
+/**
+ * The state machine class
+ * The constructor takes a config object 
+ * as described in the interface Config
+ * 
+ * The states object may have
+ * an onEnter and an onInput function.
+ * To go to a different state, the onInput function
+ * must return the name (string) of the next state.
+ */
+
 interface Config {
   initialState: string;
   states: Object;
@@ -16,7 +27,7 @@ module.exports = class StateMachine {
   }
 
   turn(data) {
-    var nextStateName = this._currentState.onInput(data);
+    var nextStateName = this._currentState.onInput && this._currentState.onInput(data);
     if (nextStateName) {
       this.goToState(nextStateName);
     }
