@@ -2,9 +2,10 @@
 "use strict";
 module.exports = class Client {
 
-
-  constructor(public socket, public fingerprint, public person :Person) {
-  }
+  constructor(
+    public socket,
+    public fingerprint,
+    public nickname) { }
 
   toString() {
     return `
