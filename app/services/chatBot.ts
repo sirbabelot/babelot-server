@@ -23,7 +23,7 @@ module.exports = {
     }
 
     function onStateEnter(stateName) {
-      if (StateMachine.lastVisitedState === stateName) {
+      if (StateMachine.lastVisitedState.name === stateName) {
         respond(STATES["I_DONT_UNDERSTAND"] +  STATES[stateName])
       } else {
         respond(STATES[stateName])
@@ -36,7 +36,7 @@ module.exports = {
       states: {
         "GREETING": {
           onEnter: function() {
-            if (StateMachine.lastVisitedState === this.name) {
+            if (StateMachine.lastVisitedState.name === this.name) {
               respond(STATES["I_DONT_UNDERSTAND"] +  STATES['GREETING2'])
             } else {
               respond(STATES[this.name]);
@@ -112,6 +112,8 @@ module.exports = {
 
     socket.on('direct message', (data) => {
       bot.turn(data);
+      // var nextState = bot.currentState.onInput(data);
+      // bot.goToState(nextState)
     });
   } 
 

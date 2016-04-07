@@ -21,12 +21,14 @@ module.exports = class StateMachine {
   private _states;
   public static lastVisitedState;
 
-  constructor(public config : Config) {
+  constructor(public config: Config) {
     this._states = config.states;
+    this._currentState = config.initialState;
     this.goToState(config.initialState);
   }
 
   turn(data) {
+    
     var nextStateName = this._currentState.onInput && this._currentState.onInput(data);
     if (nextStateName) {
       this.goToState(nextStateName);
@@ -35,9 +37,10 @@ module.exports = class StateMachine {
 
   private goToState(stateName) {
     if (this._states[stateName]) {
-      StateMachine.lastVisitedState = this._currentState && this._currentState.name;
+      StateMachine.lastVisitedState = this._currentState;
 
       this._currentState = this._states[stateName];
+      // adding name to the state object so we can access it in the onEnter & onInput
       this._states[stateName].name = stateName;
 
       this._currentState.onEnter && this._currentState.onEnter();
