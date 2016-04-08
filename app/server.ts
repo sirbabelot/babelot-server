@@ -11,9 +11,6 @@ var request = require('superagent');
 
 /* routers */
 var userController = require('./api/user/userController.js');
-var connectionController = require('./api/connection/connectionController.js');
-var tokenController = require('./api/token/tokenController.js');
-
 
 /* app */
 var app = express();
@@ -34,8 +31,6 @@ chatService.init();
 
 // ROUTERS
 app.use('/users', userController);
-app.use('/connection', connectionController);
-app.use('/token', tokenController);
 
 app.post('/tone', (req, res)=> {
   var text = JSON.parse(req.body).text
