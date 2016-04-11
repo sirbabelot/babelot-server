@@ -6,8 +6,9 @@
     "removeComments": true
   },
   "filesGlob": [
-    "./**/*.ts",
-    "!node_modules",
-    "!app/api/user/userModel.ts"
+    "./**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
   ]
 }

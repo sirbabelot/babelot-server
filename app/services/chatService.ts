@@ -5,6 +5,7 @@ var generateName = require('sillyname');
 var chatBot = require('./chatBot');
 var Client = require('./Client');
 
+
 // TODO: (dharness) change all socket signals to be actor.event.type format
 // e.g business.setStatus.online or business.setStatus, {status: online}
 
