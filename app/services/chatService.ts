@@ -5,11 +5,15 @@ var generateName = require('sillyname');
 var chatBot = require('./chatBot');
 var Client = require('./Client');
 
+<<<<<<< HEAD
 
 // TODO: (dharness) change all socket signals to be actor.event.type format
 // e.g business.setStatus.online or business.setStatus, {status: online}
 
 module.exports =  class ChatService {
+=======
+class ChatService {
+>>>>>>> master
 
   public onlineBusinesses: any;
   public onlineClients: any;
@@ -48,12 +52,13 @@ module.exports =  class ChatService {
         var client = new Client(socket,
             data.clientInfo.fingerprint,
             data.clientInfo.nickname);
-        this.onlineClients.set(client.fingerprint, client);
+        client.status = 'online';
+        this.onlineClients.set(socket.id, client);
 
         // Generate a unique ID for each business:client pair
         let business_socket = this.onlineBusinesses.get(data.businessId);
         if (business_socket) {
-          this.joinParticipants({socket: business_socket}, client);
+          this.joinParticipants({ socket: business_socket }, client);
           this.io.of(this.namespace).emit('business.statusChanged',
             { status: 'online' });
         }
@@ -61,6 +66,17 @@ module.exports =  class ChatService {
       });
 
       socket.on('direct message', (data) => this.forwardMessage(data, socket));
+      socket.on('disconnect', ()=> {
+        var client = this.onlineClients.get(socket.id);
+        var businessSocket = this.onlineBusinesses.get('ExclusiveRentals.com');
+        if (businessSocket && client) {
+          client.status = 'offline';
+          businessSocket.emit('client.statusChanged', {
+            status: 'offline',
+            fingerprint: client.fingerprint
+          })
+        }
+      })
     });
   }
 
@@ -80,6 +96,7 @@ module.exports =  class ChatService {
       s.emit('client.nowOnline', {
         fingerprint: client.fingerprint,
         nickname: client.nickname,
+        status: client.status,
         roomId
       });
     });

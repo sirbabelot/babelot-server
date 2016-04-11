@@ -32,7 +32,6 @@ chatService.init();
 // ROUTERS
 app.use('/users', userController);
 
-
 server.listen(PORT, () => {
   console.log(`Server listening at https://localhost:${PORT}`);
 });
