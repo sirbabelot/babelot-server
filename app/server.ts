@@ -29,6 +29,14 @@ let ChatService = require('./services/chatService.js');
 let chatService = new ChatService(io);
 chatService.init();
 
+app.get('/script/:businessId', (req, res)=> {
+  var path = __dirname + '/test.js';
+  var chindow = require('./services/chindow.js');
+  chindow(req.params.businessId, (file) => {
+    return res.send(file);
+  });
+});
+
 // ROUTERS
 app.use('/users', userController);
 
