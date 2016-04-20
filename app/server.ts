@@ -39,6 +39,15 @@ app.get('/script/:businessId', (req, res)=> {
 
 // ROUTERS
 app.use('/users', userController);
+// Semantic analysis data
+app.post('/tone', (req, res) => {
+  var text = JSON.parse(req.body).text
+  request.post('https://babelot-ibm.mybluemix.net/tone')
+    .send({ text: text })
+    .end((err, data) => {
+      res.send(data)
+    });
+})
 
 server.listen(PORT, () => {
   console.log(`Server listening at https://localhost:${PORT}`);
