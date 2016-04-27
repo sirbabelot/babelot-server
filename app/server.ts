@@ -14,6 +14,7 @@ var userController = require('./api/user/userController.js');
 
 /* app */
 var app = express();
+var request = require("request");
 var server = require('http').Server(app);
 var io = require('socket.io')(server, { path: '/babelot/socket.io' });
 var PORT = process.env.PORT || 8080;
@@ -39,14 +40,38 @@ app.get('/script/:businessId', (req, res)=> {
 
 // ROUTERS
 app.use('/users', userController);
+
+
 // Semantic analysis data
 app.post('/tone', (req, res) => {
-  var text = JSON.parse(req.body).text
-  request.post('https://babelot-ibm.mybluemix.net/tone')
-    .send({ text: text })
-    .end((err, data) => {
-      res.send(data)
+  console.log(req.body);
+  if (req.body && typeof req.body !== typeof {}) {
+    var text = JSON.parse(req.body).text;
+
+    var options = {
+      method: 'POST',
+      url: 'https://gateway.watsonplatform.net/tone-analyzer-beta/api/v3/tone',
+      qs: { version: '2016-02-11', sentences: 'false' },
+      headers:
+      {
+        'postman-token': 'e30b55f6-0724-5620-2435-ef59218c182f',
+        'cache-control': 'no-cache',
+        'content-type': 'application/json',
+        authorization: 'Basic YTEyODlkZDYtN2UzYi00YjcyLWE4NmUtMmJlMmIyMTNkNWMxOlhEVVRobG1CRlpUVg=='
+      },
+      body: { text },
+      json: true
+    };
+
+    return request(options, function(error, response, body) {
+      if (error) throw new Error(error);
+      console.log(body);
+      res.send(body);
     });
+  }
+
+  res.send(422);
+
 })
 
 server.listen(PORT, () => {
