@@ -33,6 +33,7 @@ chatService.init();
 app.get('/script/:businessId', (req, res)=> {
   var path = __dirname + '/test.js';
   var chindow = require('./services/chindow.js');
+  console.log(req.params);
   chindow(req.params.businessId, (file) => {
     return res.send(file);
   });

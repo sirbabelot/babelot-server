@@ -7,7 +7,7 @@ RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
 # Bundle app source
-COPY ./app /usr/src/app
+COPY ./ /usr/src/app
 
 # RUN npm i
 
