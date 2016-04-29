@@ -1,5 +1,5 @@
 app:
-  build: ./app
+  image: bablot/app
   ports:
     - "8080:8080"
   volumes:
@@ -14,15 +14,15 @@ app:
     - PGUSER=postgres
 
 nginx:
-  build: ./nginx
+  image: bablot/nginx
   links:
-    - node:node
+    - app:node
   ports:
     - "80:80"
     - "443:443"
 
 pg:
-  build: ./postgres
+  image: bablot/postgres
   ports:
     - "5432:5432"
 

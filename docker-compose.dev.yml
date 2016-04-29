@@ -1,5 +1,5 @@
-node:
-  build: .
+app:
+  build: ./app
   ports:
     - "8080:8080"
   volumes:
@@ -22,7 +22,7 @@ nginx:
     - "443:443"
 
 pg:
-  build: bablot/postgres
+  build: ./postgres
   ports:
     - "5432:5432"
 
