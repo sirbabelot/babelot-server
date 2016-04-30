@@ -28,7 +28,7 @@ pg:
 
 # SERVICES
 chindow:
-  image: dharness/chindow
+  image: bablot/chindow
   ports:
     - "9999:9999"
   links:

@@ -16,7 +16,7 @@ app:
 nginx:
   build: ./nginx
   links:
-    - node:node
+    - app:node
   ports:
     - "80:80"
     - "443:443"
@@ -28,7 +28,7 @@ pg:
 
 # SERVICES
 chindow:
-  image: dharness/chindow
+  image: bablot/chindow
   ports:
     - "9999:9999"
   links:
