@@ -3,7 +3,7 @@ var amqp = require('amqplib/callback_api');
 module.exports = function(businessId, done) {
   // connect to the outside docker containers using the env variables docker creates
 
-  amqp.connect(`amqp://${process.env.AMQ_PORT_5672_TCP_ADDR}:${process.env.AMQ_PORT_5672_TCP_PORT}`, (err, conn)=> {
+  amqp.connect(`amqp://rabbitmq:5672`, (err, conn)=> {
     if (err) {
       return console.log(err);
     }
