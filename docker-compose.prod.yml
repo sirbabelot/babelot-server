@@ -1,0 +1,10 @@
+version: '2'
+services:
+  app:
+    image: bablot/app
+
+  nginx:
+    image: bablot/nginx
+
+  pg:
+    image: bablot/postgres

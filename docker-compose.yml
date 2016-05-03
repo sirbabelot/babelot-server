@@ -1,41 +1,38 @@
-app:
-  image: bablot/app
-  ports:
-    - "8080:8080"
-  volumes:
-    - ./app:/usr/src/app
-    # - /usr/src/app/node_modules
-  links:
-    - pg
-    - rabbitmq:amq
-  environment:
-    - PGHOST=pg
-    - PGDATABASE=postgres
-    - PGUSER=postgres
+version: '2'
+services:
+  app:
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./app:/usr/src/app
+      # - /usr/src/app/node_modules
+    links:
+      - pg
+      - rabbitmq:amq
+    environment:
+      - PGHOST=pg
+      - PGDATABASE=postgres
+      - PGUSER=postgres
 
-nginx:
-  image: bablot/nginx
-  links:
-    - app:node
-  ports:
-    - "80:80"
-    - "443:443"
+  nginx:
+    links:
+      - app:node
+    ports:
+      - "80:80"
+      - "443:443"
 
-pg:
-  image: bablot/postgres
-  ports:
-    - "5432:5432"
+  pg:
+    ports:
+      - "5432:5432"
 
-# SERVICES
-chindow:
-  image: bablot/chindow
-  ports:
-    - "9999:9999"
-  links:
-    - rabbitmq:amq
+  chindow:
+    image: bablot/chindow
+    ports:
+      - "9999:9999"
 
-rabbitmq:
-  image: rabbitmq:3
-  ports:
-    - "15672:15672"
+  rabbitmq:
+    image: rabbitmq:3
+    ports:
+      - "5672:5672"
+      - "15672:15672"
 
