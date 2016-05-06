@@ -8,8 +8,8 @@
   },
   "scripts": {
     "test": "mocha --reporter spec './.tmp/api/**/*.test.js' ",
-    "build": "tsc --outDir ./.tmp",
-    "build:w": "tsc -watch --outDir ./.tmp &",
+    "build": "./node_modules/.bin/tsc --outDir ./.tmp",
+    "build:w": "./node_modules/.bin/tsc -watch --outDir ./.tmp &",
     "prestart": "npm run build:w",
     "start": "./node_modules/nodemon/bin/nodemon.js -L ./.tmp/server.js --watch ./.tmp/ --use_strict",
     "debug": "node-debug server --use_strict"
