@@ -12,7 +12,7 @@ after_success:
 - docker push bablot/app
 - docker push bablot/nginx
 - docker push bablot/postgres
-- chmod 600 key.pem
+- chmod 600 deploy_key
 - ./node_modules/.bin/shipit staging deploy
 branches:
   only:
