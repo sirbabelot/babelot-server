@@ -1,23 +1,26 @@
 language: node_js
 node_js:
-- '5'
+  - '5'
 sudo: required
 services:
-- docker
+  - docker
+addons:
+  ssh_known_hosts:
+  - 162.243.218.96
 after_success:
-- docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-- docker build -t bablot/app ./app
-- docker build -t bablot/nginx ./nginx
-- docker build -t bablot/postgres ./postgres
-- docker push bablot/app
-- docker push bablot/nginx
-- docker push bablot/postgres
-- chmod 600 deploy_key
-- ./node_modules/.bin/shipit staging deploy
+  - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+  - docker build -t bablot/app ./app
+  - docker build -t bablot/nginx ./nginx
+  - docker build -t bablot/postgres ./postgres
+  - docker push bablot/app
+  - docker push bablot/nginx
+  - docker push bablot/postgres
+  - chmod 600 deploy_key
+  - ./node_modules/.bin/shipit staging deploy
 branches:
   only:
   - master
   - travis
 before_install:
-- openssl aes-256-cbc -K $encrypted_39780c9b113a_key -iv $encrypted_39780c9b113a_iv
-  -in deploy_key.enc -out deploy_key -d
+  - openssl aes-256-cbc -K $encrypted_39780c9b113a_key -iv $encrypted_39780c9b113a_iv
+    -in deploy_key.enc -out deploy_key -d
