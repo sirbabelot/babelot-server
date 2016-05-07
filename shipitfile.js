@@ -1,7 +1,3 @@
-const DOCKER_REMOVE = 'docker rm -f $(docker ps -aq)'
-const DOCKER_PULL = 'docker pull bablot/travis-test';
-const DOCKER_RUN = 'docker run -d --name bablotcontainer -p 8888:8888 bablot/travis-test npm start';
-
 module.exports = function(shipit) {
   shipit.initConfig({
     staging: {
@@ -11,6 +7,15 @@ module.exports = function(shipit) {
   });
 
   shipit.task('deploy', ()=> {
-    return shipit.remote('pwd && ls')
+   return shipit
+        .remote('mkdir -p app')
+        .then(()=> shipit.remoteCopy('docker-compose.yml', './app/docker-compose.yml'))
+        .then(()=> shipit.remoteCopy('docker-compose.prod.yml', './app/docker-compose.prod.yml'))
+        .then(()=> shipit.remote(`
+          cd app &&
+          docker-compose -f docker-compose.yml -f docker-compose.prod.yml stop &&
+          docker-compose -f docker-compose.yml -f docker-compose.prod.yml rm &&
+          docker-compose -f docker-compose.yml -f docker-compose.prod.yml pull &&
+          docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d`));
   });
 };
