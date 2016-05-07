@@ -5,10 +5,5 @@
     "emitDecoratorMetadata": true,
     "removeComments": true
   },
-  "filesGlob": [
-    "./**/*.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "files": []
 }
