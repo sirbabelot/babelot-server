@@ -18,7 +18,7 @@ class User {
   }
 
   async findOrCreate(options) {
-    let res = {};
+    let res :any = {};
     let users;
     let acceptedAttrs = ['id', 'nickname', 'img_url', 'email'];
 
@@ -27,7 +27,7 @@ class User {
     if (users.length > 0) res.created = false;
     else {
       // Format a user object the DB can handle
-      let userToAdd = {};
+      let userToAdd :any = {};
       acceptedAttrs.forEach((attr)=> {
         if (_.has(options, attr)) {
           userToAdd[attr] = options[attr];

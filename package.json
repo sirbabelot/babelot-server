@@ -1,0 +1,20 @@
+{
+  "name": "babelot-server",
+  "version": "0.0.0",
+  "description": "the bablot api server",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sirbabelot/babelot-server.git"
+  },
+  "author": "Dylan Harness <dharness@uwo.ca>",
+  "bugs": {
+    "url": "https://github.com/sirbabelot/babelot-server/issues"
+  },
+  "homepage": "https://github.com/sirbabelot/babelot-server#readme",
+  "dependencies": {
+    "shipit-cli": "1.4.1"
+  }
+}

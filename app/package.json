@@ -8,10 +8,10 @@
   },
   "scripts": {
     "test": "mocha --reporter spec './.tmp/api/**/*.test.js' ",
-    "build": "./node_modules/.bin/tsc --outDir ./.tmp",
+    "build": "tsc --outDir ./.tmp",
     "build:w": "./node_modules/.bin/tsc -watch --outDir ./.tmp &",
-    "prestart": "npm run build:w",
-    "start": "./node_modules/nodemon/bin/nodemon.js -L ./.tmp/server.js --watch ./.tmp/ --use_strict",
+    "prestart": "npm run build",
+    "start": "./node_modules/.bin/nodemon -L ./.tmp/server.js --watch ./.tmp/ --use_strict",
     "debug": "node-debug server --use_strict"
   },
   "repository": {

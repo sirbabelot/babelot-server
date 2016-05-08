@@ -1,6 +1,5 @@
 /// <reference path="./../typings/node.d.ts" />
 "use strict";
-var User = require('../api/user/userModel.js');
 var generateName = require('sillyname');
 var chatBot = require('./chatBot');
 var Client = require('./Client');
