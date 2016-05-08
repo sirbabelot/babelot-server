@@ -16,7 +16,7 @@ module.exports = function(shipit) {
           docker-compose -f docker-compose.yml -f docker-compose.prod.yml stop &&
           echo "y" | docker-compose -f docker-compose.yml -f docker-compose.prod.yml rm --all &&
           docker-compose -f docker-compose.yml -f docker-compose.prod.yml pull &&
-          docker-compose -f docker-compose.yml -f docker-compose.prod.yml up`
+          docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d`
         ));
   });
 };
