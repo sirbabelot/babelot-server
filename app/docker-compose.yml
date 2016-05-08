@@ -3,6 +3,9 @@ services:
   app:
     ports:
       - "8080:8080"
+    volumes:
+      - ./app:/usr/src/app
+      - /usr/src/app/node_modules
     links:
       - pg
       - rabbitmq:amq
@@ -24,6 +27,8 @@ services:
 
   chindow:
     image: bablot/chindow
+    ports:
+      - "9999:9999"
 
   rabbitmq:
     image: rabbitmq:3

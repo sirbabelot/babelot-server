@@ -1,7 +1,5 @@
 /// <reference path="./typings/node.d.ts" />
 "use strict";
-// To allow relative requires in other modules
-global.__base = __dirname + '/';
 require('dotenv').load();
 var express = require('express');
 var bodyParser = require('body-parser');
