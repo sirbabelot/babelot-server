@@ -1,15 +1,12 @@
 # Dockerfile
-FROM node:5
+FROM node:5.3.0
 
-# Create app directory
-RUN mkdir -p /usr/src/app
+ADD package.json /tmp/package.json
+RUN cd /tmp && npm install
+RUN mkdir -p /opt/app && cp -a /tmp/node_modules /opt/app/
 
-WORKDIR /usr/src/app
-
-# Bundle app source
-COPY ./ /usr/src/app
-
-RUN npm install
+WORKDIR /opt/app
+ADD . /opt/app
 
 EXPOSE 8080
 
