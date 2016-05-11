@@ -39,6 +39,9 @@ app.get('/script/:businessId', (req, res)=> {
 // ROUTERS
 app.use('/users', userController);
 
+app.get('/', (req, res)=> {
+  res.send('Howdie ho!!')
+})
 
 // Semantic analysis data
 app.post('/tone', (req, res) => {
