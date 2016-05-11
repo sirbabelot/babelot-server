@@ -3,10 +3,10 @@ FROM node:5.3.0
 
 ADD package.json /tmp/package.json
 RUN cd /tmp && npm install
-RUN mkdir -p /opt/app && cp -a /tmp/node_modules /opt/app/
+RUN mkdir -p /usr/src/app && cp -a /tmp/node_modules /usr/src/app/
 
-WORKDIR /opt/app
-ADD . /opt/app
+WORKDIR /usr/src/app
+ADD . /usr/src/app
 
 EXPOSE 8080
 
