@@ -16,5 +16,8 @@
   "homepage": "https://github.com/sirbabelot/babelot-server#readme",
   "dependencies": {
     "shipit-cli": "1.4.1"
+  },
+  "devDependencies": {
+    "jasmine": "2.4.1"
   }
 }

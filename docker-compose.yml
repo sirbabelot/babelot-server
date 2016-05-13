@@ -1,8 +1,8 @@
 version: '2'
 services:
   app:
-    ports:
-      - "8080:8080"
+    # ports:
+      # - "9000:9000"
     links:
       - pg
       - rabbitmq:amq
@@ -15,8 +15,8 @@ services:
     links:
       - app:node
     ports:
-      - "80:80"
-      - "443:443"
+      - "9000:9000"
+      # - "443:443"
 
   pg:
     ports:
