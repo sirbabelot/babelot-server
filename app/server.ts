@@ -17,17 +17,6 @@ var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var PORT = process.env.PORT || 9000;
 
-io.on('connection', function(socket) {
-  socket.emit('news', { hello: 'world' });
-  socket.on('my other event', function(data) {
-    console.log(data);
-  });
-});
-
-io.emit('an event sent to all connected clients');
-
-// console.log(io);
-
 app.use(cors);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
@@ -35,9 +24,9 @@ app.use(bodyParser.raw());
 app.use(bodyParser.text());
 
 // Start up the chat service
-// let ChatService = require('./services/chatService.js');
-// let chatService = new ChatService(io);
-// chatService.init();
+let ChatService = require('./services/chatService.js');
+let chatService = new ChatService(io);
+chatService.init();
 
 app.get('/script/:businessId', (req, res)=> {
   var path = __dirname + '/test.js';
