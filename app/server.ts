@@ -14,8 +14,8 @@ var userController = require('./api/user/userController.js');
 var app = express();
 var request = require("request");
 var server = require('http').Server(app);
-var io = require('socket.io')(server, { path: '/babelot/socket.io' });
-var PORT = process.env.PORT || 8080;
+var io = require('socket.io')(server);
+var PORT = process.env.PORT || 9000;
 
 app.use(cors);
 app.use(bodyParser.json());
