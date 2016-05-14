@@ -81,6 +81,8 @@ class Persist {
 
   //This will be used for either the bot,
   async saveMessageBot(message, fingerPrint){
+    var user = await UserHuman.findOne({ 'FingerPrint': fingerPrint })
+
     var newMessage = await new Message({
       'Message': message,
       'IsRentee': false,
@@ -90,6 +92,7 @@ class Persist {
 
     return await Conversation
       .findOneAndUpdate({
+        'UserId': user,
         'FingerPrint': fingerPrint
       }, {
         '$push': { 'Messages': newMessage }

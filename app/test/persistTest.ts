@@ -36,7 +36,7 @@ module.exports = function(app){
     })
   })
 
-  app.get('/checkConvo', (req, res) => {
+  app.get('/checkConvoFail', (req, res) => {
     var checkPass = persist.checkConversationExists('Rain dropss');
     checkPass.then((convo) => {
       console.log('5. Complete: Check Conversations exists');
@@ -45,8 +45,35 @@ module.exports = function(app){
     });
   })
 
-  app.get('/saveMessage', (req, res) => {
-    var saveMsg = persist.saveMessage('Howdie', 'Rain drops');
+  app.get('/checkConvoPass', (req, res) => {
+    var checkPass = persist.checkConversationExists('Rain drops');
+    checkPass.then((convo) => {
+      console.log('5. Complete: Check Conversations exists');
+      console.log(convo)
+      res.send(convo)
+    });
+  })
+
+  app.get('/saveMessageHuman', (req, res) => {
+    var saveMsg = persist.saveMessageHuman('Howdie', 'Rain drops');
+    saveMsg.then((msg) => {
+      console.log('6. Complete: Saved Message');
+      console.log(msg)
+      res.send(msg)
+    })
+  })
+
+  app.get('/saveMessageBot', (req, res) => {
+    var saveMsg = persist.saveMessageBot('Im a bot', 'Rain drops');
+    saveMsg.then((msg) => {
+      console.log('6. Complete: Saved Message');
+      console.log(msg)
+      res.send(msg)
+    })
+  })
+
+  app.get('/saveMessageRentee', (req, res) => {
+    var saveMsg = persist.saveMessageRentee('I want a house', 'Rain drops');
     saveMsg.then((msg) => {
       console.log('6. Complete: Saved Message');
       console.log(msg)
@@ -60,6 +87,8 @@ module.exports = function(app){
       console.log(messages)
       console.log(messages.length)
       res.send(messages)
+    }).catch((err)=> {
+      res.send(err)
     })
   })
 }
