@@ -43,6 +43,7 @@
     "https": "1.0.0",
     "knex": "0.10.0",
     "mocha-co": "1.17.1",
+    "mongoose": "^4.4.16",
     "node-fetch": "1.4.1",
     "node-inspector": "0.12.7",
     "nodemon": "1.9.1",
