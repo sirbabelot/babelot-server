@@ -54,8 +54,11 @@ module.exports = function(app){
     });
   })
 
-  app.get('/saveMessageHuman', (req, res) => {
-    var saveMsg = persist.saveMessageHuman('Howdie', 'Rain drops');
+  app.get('/saveMessage/:fingerPrint/:type', (req, res) => {
+    var type = req.params.type;
+    var message = 'Message from ' + type
+    var fingerPrint = req.params.fingerPrint;
+    var saveMsg = persist.saveMessage(message, fingerPrint, type);
     saveMsg.then((msg) => {
       console.log('6. Complete: Saved Message');
       console.log(msg)
@@ -63,27 +66,10 @@ module.exports = function(app){
     })
   })
 
-  app.get('/saveMessageBot', (req, res) => {
-    var saveMsg = persist.saveMessageBot('Im a bot', 'Rain drops');
-    saveMsg.then((msg) => {
-      console.log('6. Complete: Saved Message');
-      console.log(msg)
-      res.send(msg)
-    })
-  })
-
-  app.get('/saveMessageRentee', (req, res) => {
-    var saveMsg = persist.saveMessageRentee('I want a house', 'Rain drops');
-    saveMsg.then((msg) => {
-      console.log('6. Complete: Saved Message');
-      console.log(msg)
-      res.send(msg)
-    })
-  })
-
-  app.get('/getConversation', (req, res) => {
-    var messages = persist.getConversation('Rain drops');
+  app.get('/getConversation/:fingerPrint', (req, res) => {
+    var messages = persist.getConversation(req.params.fingerPrint);
     messages.then((messages) => {
+      console.log('then')
       console.log(messages)
       console.log(messages.length)
       res.send(messages)
