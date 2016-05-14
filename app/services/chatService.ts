@@ -22,7 +22,6 @@ module.exports = class ChatService {
 
       // Businesses emit this when they go on/off line
       socket.on('business.changeStatus', (data) => {
-        console.log('business.changeStatus', data);
         if (data.status === 'online') {
           this.onlineBusinesses.set(data.businessId, socket);
           var business = { socket };
@@ -50,7 +49,6 @@ module.exports = class ChatService {
 
         // Generate a unique ID for each business:client pair
         let business_socket = this.onlineBusinesses.get(data.businessId);
-        console.log(data.businessId);
         if (business_socket) {
           this.joinParticipants({ socket: business_socket }, client);
           this.io.of(this.namespace).emit('business.statusChanged',
