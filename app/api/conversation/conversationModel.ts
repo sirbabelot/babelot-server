@@ -52,11 +52,25 @@ class Conversation {
     
     var conversation = await this.createConversation(fingerPrint);
     console.log(conversation);
+
     return{
       type: 'conversation',
       data: await messageModel.getMessagesByIds(conversation.Messages),
       attributes: conversation
     }
+  }
+
+  async getConvoAndUpdate(fingerPrint, message, client){
+    return ConversationDB
+      .findOneAndUpdate({
+        'ClientId': client,
+        'FingerPrint': fingerPrint
+      }, {
+        'Date': Date.now(),
+        '$push': { 'Messages': message }
+      }, {
+        safe: true, upsert: true, new: true
+      });
   }
 
   //This will check that a conversation exists, if it does not, it wil return null

@@ -11,6 +11,17 @@ class Message {
       }
     })
   }
+
+  async saveMessage(fingerPrint, message) {
+    console.log('fingerPrint')
+    console.log(fingerPrint)
+    console.log('message')
+    console.log(message)
+    return await new MessageDB({
+      'Message': message,
+      'FingerPrint': fingerPrint
+    }).save();
+  }
 }
 
 module.exports = new Message();

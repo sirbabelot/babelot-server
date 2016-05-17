@@ -1,6 +1,6 @@
 "use strict";
 
-var ClientDB = require('../../schemas/userSchema.js');
+var ClientDB = require('../../schemas/clientSchema.js');
 
 class ClientModel {
 
@@ -10,12 +10,15 @@ class ClientModel {
 
   //Returns a user object
   async getClient(fingerPrint) {
-    console.log('howdie');
-    var client = await this.findClient(fingerPrint);
-    if (client != null) {
-      return client;
+    console.log('howdie2');
+    var clientFind = await this.findClient(fingerPrint);
+    console.log('client')
+    console.log(clientFind)
+    if (clientFind != null) {
+      return clientFind;
     } else {
-      var newClient = new UserHumanDB({
+      console.log('saving user')
+      var newClient = new ClientDB({
         FingerPrint: fingerPrint
       });
       return await newClient.save();
@@ -23,7 +26,7 @@ class ClientModel {
   }
 
   async findClient(fingerPrint) {
-    return await ClientDB.findClient({ 
+    return await ClientDB.findOne({ 
       'FingerPrint': fingerPrint 
     });
   }

@@ -24,7 +24,7 @@ var message = require('./messageModel.js');
 
 //Get messages
 router.get('/message', async (req, res) => {
-  return res.send(await convo.previewList());
+  return res.send(await message());
 });
 
 module.exports = router;

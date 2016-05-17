@@ -10,7 +10,8 @@ var messageSchema = db.Schema({
   // IsRentee: Boolean, //True if this is a person looking for a property
   UserId: { type: db.Schema.Types.ObjectId, ref: 'Client' },
   Order: Number,
-  Message: String
+  Message: String,
+  FingerPrint: String
 });
 
 module.exports = db.model('Message', messageSchema);
