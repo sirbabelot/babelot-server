@@ -6,7 +6,9 @@ var jwt = require('express-jwt');
 
 
 //DATABASE ======================================
-var user = require('./userModel.js');
+// var UserHuman = db.model('User', require('../models/userModel.js'));
+var convo = require('./conversationModel.js');
+// var Message = db.model('Message', require('../models/messageModel.js'));
 
 //AUTH ==========================================
 
@@ -20,9 +22,17 @@ var user = require('./userModel.js');
 
 //ROUTER ========================================
 
-//Get messages
+//Get conversations
+router.get('/preview', async (req, res) => {
+  return res.send(await convo.previewList());
+});
+
 router.get('/', async (req, res) => {
-  return res.send(await user.all());
+  return res.send(await convo.all());
+});
+
+router.get('/:fingerPrint', async (req, res) => {
+  return res.send(await convo.findById(req.params.fingerPrint));
 });
 
 module.exports = router;

@@ -1,4 +1,6 @@
-var conversationModel = require('../config/mongoConnection.js').Schema({
+var db = require('../config/mongoConnection.js');
+
+var conversationSchema = db.Schema({
   Date: {
     type: Date,
     default: Date.now
@@ -12,4 +14,4 @@ var conversationModel = require('../config/mongoConnection.js').Schema({
   FingerPrint: String
 });
 
-module.exports = conversationModel;
+module.exports = db.model('Conversation', conversationSchema);

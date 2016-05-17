@@ -6,9 +6,10 @@ var bodyParser = require('body-parser');
 var cors = require('./middleware/cors.js');
 var request = require('superagent');
 
-
 /* routers */
 var userController = require('./api/user/userController.js');
+var conversationController = require('./api/conversation/conversationController.js');
+var messageController = require('./api/message/messageController.js');
 
 /* app */
 var app = express();
@@ -39,8 +40,15 @@ app.get('/script/:businessId', (req, res)=> {
 //===============================
 require('./test/persistTest.js')(app)
 
+var db = require('./config/mongoConnection.js');
+var UserHumanDB = require('./schemas/userSchema.js');
+var ConversationDB = require('./schemas/conversationSchema.js');
+var MessageDB = require('./schemas/messageSchema.js');
+
 // ROUTERS
-app.use('/users', userController);
+app.use('/user', userController);
+app.use('/message', messageController);
+app.use('/conversation', conversationController)
 
 app.get('/', (req, res)=> {
   res.send('Howdie ho!!')
