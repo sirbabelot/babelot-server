@@ -8,7 +8,7 @@ module.exports = class ChatService {
 
   public onlineBusinesses: any;
   public onlineClients: any;
-  public namespace: string = '/ExclusiveRentals.com';
+  public namespace: string = '/DEMO_ID';
 
   constructor(private io) {
     this.onlineBusinesses = new Map();
@@ -19,6 +19,7 @@ module.exports = class ChatService {
     var nsp = this.io.of(this.namespace);
 
     nsp.on('connection', (socket) => {
+
       // Businesses emit this when they go on/off line
       socket.on('business.changeStatus', (data) => {
         if (data.status === 'online') {
