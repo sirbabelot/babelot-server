@@ -1,7 +1,7 @@
 "use strict";
 
 var ConversationDB = require('../../schemas/conversationSchema.js');
-var userModel = require('../user/userModel.js');
+var clientModel = require('../client/clientModel.js');
 var messageModel = require('../message/messageModel.js');
 var _async = require('async');
 
@@ -47,8 +47,8 @@ class Conversation {
   //this will return the conversation with message
   public async findById(fingerPrint) {
     console.log('in here')
-    var user = await userModel.getUser(fingerPrint);
-    console.log(user);
+    var client = await clientModel.getClient(fingerPrint);
+    console.log(client);
     
     var conversation = await this.createConversation(fingerPrint);
     console.log(conversation);
@@ -68,9 +68,9 @@ class Conversation {
     var convo = await this.checkConversationExists(fingerPrint);
 
     if (convo == null) {
-      var user = await userModel.findUser(fingerPrint);
+      var client = await clientModel.findClient(fingerPrint);
       var newConversation = new ConversationDB({
-        'UserId': user._id,
+        'ClientId': client._id,
         'FingerPrint': fingerPrint,
         'Messages': []
       });

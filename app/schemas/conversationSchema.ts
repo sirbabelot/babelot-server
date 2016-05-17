@@ -5,11 +5,11 @@ var conversationSchema = db.Schema({
     type: Date,
     default: Date.now
   },
-  UserId: { 
-    type: require('../config/mongoConnection.js').Schema.Types.ObjectId, ref: 'User' 
+  ClientId: { 
+    type: db.Schema.Types.ObjectId, ref: 'Client' 
   },
   Messages:[{
-    type: require('../config/mongoConnection.js').Schema.Types.ObjectId, ref: 'Message'
+    type: db.Schema.Types.ObjectId, ref: 'Message'
   }],
   FingerPrint: String
 });

@@ -6,7 +6,7 @@ var jwt = require('express-jwt');
 
 
 //DATABASE ======================================
-var user = require('./userModel.js');
+var client = require('./clientModel.js');
 
 //AUTH ==========================================
 
@@ -22,7 +22,7 @@ var user = require('./userModel.js');
 
 //Get messages
 router.get('/', async (req, res) => {
-  return res.send(await user.all());
+  return res.send(await client.all());
 });
 
 module.exports = router;

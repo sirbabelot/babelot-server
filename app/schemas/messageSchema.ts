@@ -5,13 +5,12 @@ var messageSchema = db.Schema({
     type: Date,
     default: Date.now
   },
-  IsHuman: Boolean, //True if a message from Bablot team
-  IsBot: Boolean, //True if this is our bot
-  IsRentee: Boolean, //True if this is a person looking for a property
-  UserId: { type: require('../config/mongoConnection.js').Schema.Types.ObjectId, ref: 'User' },
+  // IsHuman: Boolean, //True if a message from Bablot team
+  // IsBot: Boolean, //True if this is our bot
+  // IsRentee: Boolean, //True if this is a person looking for a property
+  UserId: { type: db.Schema.Types.ObjectId, ref: 'Client' },
   Order: Number,
-  Message: String,
-  FingerPrint: String 
+  Message: String
 });
 
 module.exports = db.model('Message', messageSchema);

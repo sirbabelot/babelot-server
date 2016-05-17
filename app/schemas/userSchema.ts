@@ -1,6 +1,6 @@
 var db = require('../config/mongoConnection.js');
 
-var userSchema = db.Schema({
+var clientSchema = db.Schema({
   Name: String,
   Date: {
     type: Date,
@@ -10,4 +10,4 @@ var userSchema = db.Schema({
   NickName: String
 });
 
-module.exports = db.model('User', userSchema);
+module.exports = db.model('Client', clientSchema);
