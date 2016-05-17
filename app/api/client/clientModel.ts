@@ -9,11 +9,11 @@ class ClientModel {
   }
 
   //Returns a user object
-  async getClient(fingerPrint) {
-    console.log('howdie2');
+  async findOrCreate(fingerPrint) {
+    // console.log('howdie2');
     var clientFind = await this.findClient(fingerPrint);
-    console.log('client')
-    console.log(clientFind)
+    // console.log('client')
+    // console.log(clientFind)
     if (clientFind != null) {
       return clientFind;
     } else {

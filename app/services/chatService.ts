@@ -3,6 +3,7 @@
 var generateName = require('sillyname');
 var chatBot = require('./chatBot');
 var Client = require('./Client');
+var persist = require('./Persist.js');
 
 module.exports = class ChatService {
 
@@ -49,6 +50,8 @@ module.exports = class ChatService {
 
         // Generate a unique ID for each business:client pair
         let business_socket = this.onlineBusinesses.get(data.businessId);
+        console.log('business_socket');
+        console.log(business_socket);
         if (business_socket) {
           this.joinParticipants({ socket: business_socket }, client);
           this.io.of(this.namespace).emit('business.statusChanged',
@@ -73,6 +76,10 @@ module.exports = class ChatService {
   }
 
   forwardMessage(data, socket) {
+
+    //
+
+
     socket.broadcast.to(data.roomId).emit('direct message', {
       nickname: data.nickname,
       fingerprint: data.fingerprint,

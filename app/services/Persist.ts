@@ -1,19 +1,17 @@
 "use strict";
 
-var message = require('../api/message/messageModel.js');
-var client = require('../api/client/clientModel.js');
-var conversation = require('../api/conversation/conversationModel.js');
+var messageModel = require('../api/message/messageModel.js');
+var clientModel = require('../api/client/clientModel.js');
+var conversationModel = require('../api/conversation/conversationModel.js');
 
 class Persist {
   //This will save the message, based on who sent it
-  public async saveMessage(fingerPrint, messageToSave){
-    var newClient = await client.getClient(fingerPrint);
-    console.log('newClient');
-    console.log(newClient);
-    var messageSaved = await message.saveMessage(fingerPrint, messageToSave);
-    console.log('message');
-    console.log(messageSaved);
-    return await conversation.getConvoAndUpdate(fingerPrint, messageSaved, newClient)
+  public async saveMessage(fingerPrint, messageToSave) {
+    var client = await clientModel.findOrCreate(fingerPrint);
+    var conversation = await conversationModel.findOrCreate(fingerPrint);
+    var messageSaved = await messageModel.saveMessage(fingerPrint, messageToSave);
+    await conversationModel.getConvoAndUpdate(fingerPrint, messageSaved, client);
+    return messageSaved;
   }
 }
 

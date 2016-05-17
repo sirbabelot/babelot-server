@@ -45,13 +45,9 @@ class Conversation {
 
   //Based on a unique fingerprint, 
   //this will return the conversation with message
-  public async findById(fingerPrint) {
-    console.log('in here')
-    var client = await clientModel.getClient(fingerPrint);
-    console.log(client);
+  public async findOrCreate(fingerPrint) {
     
     var conversation = await this.createConversation(fingerPrint);
-    console.log(conversation);
 
     return{
       type: 'conversation',
