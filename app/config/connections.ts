@@ -1,14 +1,13 @@
 'use strict';
 
+var mongoose = require('mongoose');
+var dbURI = process.env.MONGO_URI;
 
-// var knex = require('knex')({
-//   client: 'pg',
-//   connection: {
-//     host     : process.env.POSTGRES_HOST,
-//     user     : process.env.POSTGRES_USER,
-//     database : process.env.POSTGRES_DATABASE
-//   }
-// });
+mongoose.connect(dbURI, (err) => {
+  if (err) { console.log(err); }
+  console.log("Connected to Database");
+});
 
-
-module.exports = {};
+module.exports = {
+  mongo: mongoose
+};

@@ -2,6 +2,8 @@ version: '2'
 services:
   app:
     image: bablot/app
+    environment:
+      MONGO_URI: 'mongodb://sirblabsalot:bluecakes@ds061984.mlab.com:61984/bablot'
 
   nginx:
     image: bablot/nginx

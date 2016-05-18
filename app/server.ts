@@ -6,9 +6,9 @@ var bodyParser = require('body-parser');
 var cors = require('./middleware/cors.js');
 var request = require('superagent');
 
-
 /* routers */
-var userController = require('./api/user/userController.js');
+var conversationController = require('./api/conversation/conversationController.js');
+var messageController = require('./api/message/messageController.js');
 
 /* app */
 var app = express();
@@ -37,7 +37,8 @@ app.get('/script/:businessId', (req, res)=> {
 });
 
 // ROUTERS
-app.use('/users', userController);
+app.use('/message', messageController);
+app.use('/conversation', conversationController)
 
 app.get('/', (req, res)=> {
   res.send('Howdie ho!!')

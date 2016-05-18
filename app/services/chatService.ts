@@ -3,6 +3,7 @@
 var generateName = require('sillyname');
 var chatBot = require('./chatBot');
 var Client = require('./Client');
+var persist = require('./Persist.js');
 
 module.exports = class ChatService {
 
@@ -29,7 +30,9 @@ module.exports = class ChatService {
             this.joinParticipants(business, client);
           });
         }
-        else { this.onlineBusinesses.delete(data.businessId); }
+        else { 
+          this.onlineBusinesses.delete(data.businessId); 
+        }
 
         socket.emit('business.statusChanged', { status: data.status });
         this.io.of(this.namespace).emit('business.statusChanged',
@@ -49,40 +52,57 @@ module.exports = class ChatService {
 
         // Generate a unique ID for each business:client pair
         let business_socket = this.onlineBusinesses.get(data.businessId);
+
         if (business_socket) {
-          this.joinParticipants({ socket: business_socket }, client);
+          let business = {
+            socket: business_socket,
+            fingerprint: 'bablot_portal_experiment'
+          }
+          this.joinParticipants(business, client);
           this.io.of(this.namespace).emit('business.statusChanged',
             { status: 'online' });
         }
-        else { chatBot.chatWith(socket); }
+        else { 
+          chatBot.chatWith(socket); 
+        }
       });
 
       socket.on('direct message', (data) => this.forwardMessage(data, socket));
       socket.on('disconnect', ()=> {
         var client = this.onlineClients.get(socket.id);
-        var businessSocket = this.onlineBusinesses.get('ExclusiveRentals.com');
-        if (businessSocket && client) {
-          client.status = 'offline';
+        var businessSocket = this.onlineBusinesses.get('DEMO_ID');
+        if (client && businessSocket) {
           businessSocket.emit('client.statusChanged', {
             status: 'offline',
             fingerprint: client.fingerprint
           })
+        } else {
+          this.onlineClients.forEach((client, fingerprint, map) => {
+            client.socket.emit('business.statusChanged', {
+              status: 'offline'
+            });
+          });
         }
       })
     });
   }
 
   forwardMessage(data, socket) {
+
+    //Persist
+    persist.saveMessage(data.toFingerprint, data.fromFingerprint, data.roomId, data.message);
+
     socket.broadcast.to(data.roomId).emit('direct message', {
       nickname: data.nickname,
-      fingerprint: data.fingerprint,
+      fromFingerprint: data.fromFingerprint,
+      toFingerprint: data.toFringerprint,
       roomId: data.roomId,
       message: data.message
     });
   }
 
   joinParticipants(business, client) {
-    var roomId = [business.socket.id, client.socket.id].sort().join('::');
+    var roomId = [business.fingerprint, client.fingerprint].sort().join('::');
     [business.socket, client.socket].forEach((s) => {
       s.join(roomId);
       s.emit('client.nowOnline', {
