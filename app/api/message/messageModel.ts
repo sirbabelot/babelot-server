@@ -11,14 +11,11 @@ class Message {
     })
   }
 
-  async saveMessage(fingerPrint, message) {
-    // console.log('fingerPrint')
-    // console.log(fingerPrint)
-    // console.log('message')
-    // console.log(message)
+  async saveMessage(toFingerprint, fromFingerprint, message) {
     return await new MessageDB({
-      'Message': message,
-      'FingerPrint': fingerPrint
+      'Body': message,
+      'FromFingerprint': fromFingerprint,
+      'ToFingerprint': toFingerprint
     }).save();
   }
 }

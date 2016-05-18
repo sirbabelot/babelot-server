@@ -7,7 +7,6 @@ var cors = require('./middleware/cors.js');
 var request = require('superagent');
 
 /* routers */
-var clientController = require('./api/client/clientController.js');
 var conversationController = require('./api/conversation/conversationController.js');
 var messageController = require('./api/message/messageController.js');
 
@@ -40,13 +39,7 @@ app.get('/script/:businessId', (req, res)=> {
 //===============================
 require('./test/persistTest.js')(app)
 
-var db = require('./config/mongoConnection.js');
-// var UserHumanDB = require('./schemas/userSchema.js');
-// var ConversationDB = require('./schemas/conversationSchema.js');
-// var MessageDB = require('./schemas/messageSchema.js');
-
 // ROUTERS
-app.use('/user', clientController);
 app.use('/message', messageController);
 app.use('/conversation', conversationController)
 

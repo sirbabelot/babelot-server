@@ -1,7 +1,6 @@
 "use strict";
 
 var ConversationDB = require('../../schemas/conversationSchema.js');
-var clientModel = require('../client/clientModel.js');
 var messageModel = require('../message/messageModel.js');
 var _async = require('async');
 
@@ -45,22 +44,24 @@ class Conversation {
 
   //Based on a unique fingerprint, 
   //this will return the conversation with message
-  public async findOrCreate(fingerPrint) {
+  public async findOrCreate(AFingerprint, BFingerprint, roomId) {
     
-    var conversation = await this.createConversation(fingerPrint);
+    var conversation = await this.createConversation(AFingerprint, BFingerprint, roomId);
 
-    return{
-      type: 'conversation',
-      data: await messageModel.getMessagesByIds(conversation.Messages),
-      attributes: conversation
+    return {
+      messages: await messageModel.getMessagesByIds(conversation.Messages),
+      conversation: conversation
     }
   }
 
-  async getConvoAndUpdate(fingerPrint, message, client){
+  async getConversation(fingerprint){
+    return await ConversationDB.findOne({ '$or': [{ 'AFingerprint': fingerprint }, { 'BFingerprint': fingerprint }] });
+  }
+
+  async updateConversation(roomId, message) {
     return ConversationDB
       .findOneAndUpdate({
-        'ClientId': client,
-        'FingerPrint': fingerPrint
+        'RoomId': roomId
       }, {
         'Date': Date.now(),
         '$push': { 'Messages': message }
@@ -70,18 +71,19 @@ class Conversation {
   }
 
   //This will check that a conversation exists, if it does not, it wil return null
-  async checkConversationExists(fingerPrint) {
-    return await ConversationDB.findOne({ 'FingerPrint': fingerPrint })
+  async checkConversationExists(roomId) {
+    return await ConversationDB.findOne({'RoomId': roomId})
   }
 
-  async createConversation(fingerPrint) {
-    var convo = await this.checkConversationExists(fingerPrint);
+  async createConversation(AFingerprint, BFingerprint, roomId) {
+
+    var convo = await this.checkConversationExists(roomId);
 
     if (convo == null) {
-      var client = await clientModel.findClient(fingerPrint);
       var newConversation = new ConversationDB({
-        'ClientId': client._id,
-        'FingerPrint': fingerPrint,
+        'RoomId': roomId,
+        'AFingerprint': AFingerprint, 
+        'BFingerprint': BFingerprint,
         'Messages': []
       });
       return await newConversation.save();

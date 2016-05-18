@@ -5,6 +5,8 @@ services:
     volumes:
       - ./app:/usr/src/app
       - /usr/src/app/node_modules
+    environment:
+      MONGO_URI: 'mongodb://sirblabsalot:bluecakes@ds051625.mlab.com:51625/dev_bablot'
 
   nginx:
     build: ./nginx

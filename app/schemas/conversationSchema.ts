@@ -1,17 +1,13 @@
 var db = require('../config/mongoConnection.js');
 
 var conversationSchema = db.Schema({
-  Date: {
-    type: Date,
-    default: Date.now
-  },
-  ClientId: { 
-    type: db.Schema.Types.ObjectId, ref: 'Client' 
-  },
+  Date: { type: Date, default: Date.now },
+  AFingerprint: String,
+  BFingerprint: String,
   Messages:[{
     type: db.Schema.Types.ObjectId, ref: 'Message'
   }],
-  FingerPrint: String
+  RoomId: String
 });
 
 module.exports = db.model('Conversation', conversationSchema);

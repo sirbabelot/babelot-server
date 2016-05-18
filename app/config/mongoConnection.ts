@@ -1,7 +1,8 @@
 var db = require('mongoose');
 var user2 = 'sirblabsalot';
 var password = 'bluecakes';
-var dbURI = 'mongodb://' + user2 + ':' + password + '@ds061984.mlab.com:61984/bablot'
+
+var dbURI = process.env.MONGO_URI
 
 db.connect(dbURI, (err, db) => {
   if (err) { console.log(err); }
