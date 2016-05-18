@@ -36,9 +36,6 @@ app.get('/script/:businessId', (req, res)=> {
   });
 });
 
-//===============================
-require('./test/persistTest.js')(app)
-
 // ROUTERS
 app.use('/message', messageController);
 app.use('/conversation', conversationController)

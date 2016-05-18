@@ -31,7 +31,6 @@ module.exports = class ChatService {
           });
         }
         else { 
-          console.log('trying to delete');
           this.onlineBusinesses.delete(data.businessId); 
         }
 
@@ -70,19 +69,14 @@ module.exports = class ChatService {
 
       socket.on('direct message', (data) => this.forwardMessage(data, socket));
       socket.on('disconnect', ()=> {
-        console.log('Disconnecting')
-        console.log(socket.id);
         var client = this.onlineClients.get(socket.id);
         var businessSocket = this.onlineBusinesses.get('DEMO_ID');
         if (client && businessSocket) {
-          console.log('inside the iff!');
-          client.status = 'offline';
           businessSocket.emit('client.statusChanged', {
             status: 'offline',
             fingerprint: client.fingerprint
           })
         } else {
-          console.log('inside the iff for businessess!');
           this.onlineClients.forEach((client, fingerprint, map) => {
             client.socket.emit('business.statusChanged', {
               status: 'offline'

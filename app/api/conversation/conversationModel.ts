@@ -2,7 +2,6 @@
 
 var ConversationDB = require('../../schemas/conversationSchema.js');
 var messageModel = require('../message/messageModel.js');
-var _async = require('async');
 
 class Conversation {
   async all() {
@@ -10,7 +9,6 @@ class Conversation {
   }
 
   async previewList(){
-    console.log('Previewing list')
 
     //Get Conversations and sort by date
     var conversations = await ConversationDB.find({}).sort({date: 'desc'});

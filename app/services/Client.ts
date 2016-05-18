@@ -1,6 +1,6 @@
 /// <reference path="./../typings/node.d.ts" />
 "use strict";
-module.exports = class _Client {
+module.exports = class Client {
 
   constructor(
     public socket,
