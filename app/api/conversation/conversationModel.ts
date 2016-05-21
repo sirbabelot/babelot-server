@@ -27,8 +27,7 @@ class Conversation {
         firstMessage: '',
         convo: ''
       }
-
-      newConvo.firstMessage = firstMessages[i].Message;
+      newConvo.firstMessage = firstMessages[i].Body;
       newConvo.convo = conversations[i]
       newConversations.push(newConvo)
     }
