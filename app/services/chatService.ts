@@ -21,8 +21,6 @@ module.exports = class ChatService {
 
     nsp.on('connection', (socket) => {
 
-      console.log('New connection: %s <<', socket.id);
-
       // Businesses emit this when they go on/off line
       socket.on('business.changeStatus', (data) => {
         if (data.status === 'online') {          

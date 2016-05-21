@@ -31,7 +31,6 @@ var regex = {
 module.exports = {
 
   endChat: function(socket){
-    console.log('Ending Chat of socket Id:', socket.id);
     socket.removeListener('direct message', sockTest);
   },
 
