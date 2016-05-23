@@ -2,6 +2,7 @@
 "use strict";
 var generateName = require('sillyname');
 var chatBot = require('./chatBot');
+var chatHandler = require('../microservices/chat/chatHandler');
 var Client = require('./Client');
 var persist = require('./Persist.js');
 
@@ -63,7 +64,8 @@ module.exports = class ChatService {
             { status: 'online' });
         }
         else { 
-          chatBot.chatWith(socket); 
+          // chatBot.chatWith(socket);
+          chatHandler.dispatchToAmqpClient(socket);
         }
       });
 

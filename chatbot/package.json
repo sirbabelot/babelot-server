@@ -1,0 +1,22 @@
+{
+  "name": "chatbot",
+  "version": "1.0.0",
+  "description": "the chatbot service",
+  "main": "amqpServer.js",
+  "dependencies": {
+    "amqplib": "^0.4.1",
+    "nodemon": "^1.9.2",
+    "stately.js": "^1.3.0",
+    "typescript": "^1.8.10"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "build": "./node_modules/.bin/tsc --outDir ./.tmp",
+    "build:w": "./node_modules/.bin/tsc -watch --outDir ./.tmp &",
+    "predev": "npm run build:w",
+    "dev": "./node_modules/.bin/nodemon -L ./.tmp/amqpServer.js --watch ./.tmp/ --use_strict",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "bablot",
+  "license": "ISC"
+}
