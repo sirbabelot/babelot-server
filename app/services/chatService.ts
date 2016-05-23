@@ -64,7 +64,6 @@ module.exports = class ChatService {
             { status: 'online' });
         }
         else { 
-          // chatBot.chatWith(socket);
           chatHandler.addEventHandlerToSocket(socket);
         }
       });
