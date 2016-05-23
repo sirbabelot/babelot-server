@@ -48,7 +48,7 @@ var statelyConfig = {
   }),
   "HOUSE_APT": new State({
     onEnter: function() {
-    }
+    },
     onInput: function(message) {
       if (message.search(regex.house_apt) >= 0) {
         house_type = 'entire place';
@@ -67,7 +67,7 @@ var statelyConfig = {
   }),
   "NUM_OF_ROOMS": new State({
     onEnter: function() {
-    }
+    },
     onInput: function(message) {
       var matches = message.match(regex.num_range);
       if (matches && matches.length > 0) {
@@ -79,7 +79,7 @@ var statelyConfig = {
   }),
   "MAX_PRICE": new State({
     onEnter: function() {
-    }
+    },
     onInput: function(message) {
 
       var matches = message.match(regex.price);
@@ -94,7 +94,7 @@ var statelyConfig = {
   }),
   "ANYTHING_ELSE": new State({
     onEnter: function() {
-    }
+    },
     onInput: function(message) {
       anything_else = message;
       var newStr = STATES.LOOK_INTO_IT.replace('{house_type}', house_type)
@@ -105,14 +105,14 @@ var statelyConfig = {
   }),
   "OK_GOOD": new State({
     onEnter: function() {
-    }
+    },
     onInput: function(message) {
       return ['YOU_AGAIN', STATES.YOU_AGAIN]
     }
   }),
   "YOU_AGAIN": new State({
     onEnter: function() {
-    }
+    },
     onInput: function(message) {
       if (message.search(regex.yes) >= 0) {
         return ['HOUSE_APT', STATES.HOUSE_APT];
@@ -124,7 +124,7 @@ var statelyConfig = {
   }),
   "NO_HELP": new State({
     onEnter: function() {
-    }
+    },
     onInput: function(message) {
       return ['YOU_AGAIN', STATES.YOU_AGAIN]
     }

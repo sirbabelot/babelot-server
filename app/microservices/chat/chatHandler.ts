@@ -1,7 +1,7 @@
 var chatClient = require('./amqpClient.js');
 
 module.exports = {
-  dispatchToAmqpClient: function(socket) {
+  addEventHandlerToSocket: function(socket) {
 
     chatClient('reset conversation', function(message) {
       socket.emit('direct message', { message: message });

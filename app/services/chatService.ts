@@ -65,7 +65,7 @@ module.exports = class ChatService {
         }
         else { 
           // chatBot.chatWith(socket);
-          chatHandler.dispatchToAmqpClient(socket);
+          chatHandler.addEventHandlerToSocket(socket);
         }
       });
 

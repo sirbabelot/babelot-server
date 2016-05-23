@@ -5,7 +5,6 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var cors = require('./middleware/cors.js');
 var request = require('superagent');
-var testrabbit = require('./testrabbit.js');
 
 
 /* routers */
@@ -46,15 +45,6 @@ app.get('/', (req, res) => {
   res.send('Howdie ho!!')
 });
 
-app.get('/chat/:message', (req, res)=> {
-  req.params.message && testrabbit(req.params.message, function(response) {
-    res.send(`
-      <b>Sent:</b> ${req.params.message}
-      <br/>
-      <b>Received:</b> ${response}
-      `);
-  });
-});
 
 // Semantic analysis data
 app.post('/tone', (req, res) => {

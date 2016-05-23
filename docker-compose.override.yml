@@ -14,10 +14,10 @@ services:
   pg:
     build: ./postgres
 
-  chatbot:
-    build: ./chatbot
+  chatterpillar:
+    build: ./chatterpillar
     volumes:
-      - ./chatbot:/usr/src/chatbot
-      - /usr/src/chatbot/node_modules
+      - ./chatterpillar:/usr/src/chatterpillar
+      - /usr/src/chatterpillar/node_modules
     command: npm run dev
 

@@ -22,4 +22,5 @@ rabbitConnect().then((connection)=> {
     ch.consume(q, function(msg) {
       engine(ch, msg);
     }, { noAck: true });
+  });
 });

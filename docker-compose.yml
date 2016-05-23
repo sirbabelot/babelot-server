@@ -22,7 +22,7 @@ services:
   chindow:
     image: bablot/chindow
 
-  chatbot:
+  chatterpillar:
 
   rabbitmq:
     image: rabbitmq:3
