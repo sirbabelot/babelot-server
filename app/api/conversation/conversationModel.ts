@@ -73,6 +73,7 @@ class Conversation {
         new: true, 
         upsert: true 
       });
+  }
 }
 
 module.exports = new Conversation();
