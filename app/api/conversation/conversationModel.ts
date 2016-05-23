@@ -16,7 +16,6 @@ class Conversation {
     //Get First Message of each Conversation and append to each conversation
     var mostRecentMessageIds = []
 
-    for (var i = 0; i < conversations.length; ++i)
     conversations.forEach((conversation)=> {
       var messageId = conversation.Messages[conversation.Messages.length - 1]
       mostRecentMessageIds.push(messageId);
