@@ -17,20 +17,23 @@ class Conversation {
     var mostRecentMessageIds = []
 
     for (var i = 0; i < conversations.length; ++i)
-      mostRecentMessageIds.push(conversations[i].Messages[conversations[i].Messages.length - 1]);
+    conversations.forEach((conversation)=> {
+      var messageId = conversation.Messages[conversation.Messages.length - 1]
+      mostRecentMessageIds.push(messageId);
+    })
 
     var firstMessages = await messageModel.getMessagesByIds(mostRecentMessageIds);
     var newConversations = []
 
-    for (var i = 0; i < firstMessages.length; ++i){
+    firstMessages.forEach((message, i)=> {
       var newConvo = {
         firstMessage: '',
         convo: ''
       }
-      newConvo.firstMessage = firstMessages[i].Body;
+      newConvo.firstMessage = firstMessages.Body;
       newConvo.convo = conversations[i];
       newConversations.push(newConvo);
-    }
+    })
 
     var data = {
       data: newConversations
@@ -42,14 +45,15 @@ class Conversation {
   //Based on a unique roomId, 
   //this will return the conversation with message, if not undefined
   public async findOrCreate(AFingerprint: string, BFingerprint: string, roomId: string) {
+    var conversationData;
     var conversation = await this.createConversation(AFingerprint, BFingerprint, roomId);
-    if(!conversation){
-      return undefined;
+    if(conversation){
+      var conversationData = {
+        messages: await messageModel.getMessagesByIds(conversation.Messages),
+        conversation: conversation
+      }
     }
-    return {
-      messages: await messageModel.getMessagesByIds(conversation.Messages),
-      conversation: conversation
-    }
+    return conversationData;
   }
 
   async updateConversation(roomId: string, message: string) {

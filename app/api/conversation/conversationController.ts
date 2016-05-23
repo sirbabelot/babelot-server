@@ -20,7 +20,7 @@ router.get('/', async function(req, res) {
   return res.send(await convo.all());
 });
 
-router.get('/:fingerPrint', async function(req, res) {
+router.post('/:fingerPrint', async function(req, res) {
   return res.send(await convo.findOrCreate(req.params.fingerPrint));
 });
 
