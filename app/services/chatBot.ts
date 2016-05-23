@@ -1,4 +1,5 @@
 var Stately = require('stately.js');
+var persist = require('./Persist.js');
 
 var STATES = {
   HEY_THERE: "hey there!",
@@ -34,9 +35,13 @@ module.exports = {
     socket.removeListener('direct message', sockTest);
   },
 
-  chatWith: function(socket) {
-
-    function respond(message) {
+  chatWith: function(socket, client) {
+    
+    async function respond(message) {
+      var toFingerprint = client.fingerprint;
+      var fromFingerprint = 'bablot_portal_experiment';
+      var roomId = client.fingerprint;
+      await persist.saveMessage(toFingerprint, fromFingerprint, roomId, message);
       socket.emit('direct message', { message: message });
     }
 

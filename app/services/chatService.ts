@@ -65,7 +65,7 @@ module.exports = class ChatService {
             { status: 'online' });
         }
         else { 
-          chatBot.chatWith(socket); 
+          chatBot.chatWith(socket, client); 
         }
       });
 
@@ -114,7 +114,6 @@ module.exports = class ChatService {
   }
 
   forwardMessage(data, socket) {
-    //Persist
     persist.saveMessage(data.toFingerprint, data.fromFingerprint, data.roomId, data.message);
 
     socket.broadcast.to(data.roomId).emit('direct message', {
@@ -127,7 +126,7 @@ module.exports = class ChatService {
   }
 
   joinParticipants(business, client) {
-    var roomId = [business.fingerprint, client.fingerprint].sort().join('::');
+    var roomId = client.fingerprint;
     [business.socket, client.socket].forEach((s) => {
       s.join(roomId);
       s.emit('client.nowOnline', {

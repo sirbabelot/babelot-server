@@ -16,21 +16,23 @@ class Conversation {
     //Get First Message of each Conversation and append to each conversation
     var mostRecentMessageIds = []
 
-    for (var i = 0; i < conversations.length; ++i)
-      mostRecentMessageIds.push(conversations[i].Messages[conversations[i].Messages.length - 1])
+    conversations.forEach((conversation)=> {
+      var messageId = conversation.Messages[conversation.Messages.length - 1]
+      mostRecentMessageIds.push(messageId);
+    })
 
-    var firstMessages = await messageModel.getMessagesByIds(mostRecentMessageIds)
+    var firstMessages = await messageModel.getMessagesByIds(mostRecentMessageIds);
     var newConversations = []
 
-    for (var i = 0; i < firstMessages.length; ++i){
+    firstMessages.forEach((message, i)=> {
       var newConvo = {
         firstMessage: '',
         convo: ''
       }
-      newConvo.firstMessage = firstMessages[i].Body;
-      newConvo.convo = conversations[i]
-      newConversations.push(newConvo)
-    }
+      newConvo.firstMessage = firstMessages.Body;
+      newConvo.convo = conversations[i];
+      newConversations.push(newConvo);
+    })
 
     var data = {
       data: newConversations
@@ -39,24 +41,22 @@ class Conversation {
     return data;
   }
 
-  //Based on a unique fingerprint, 
-  //this will return the conversation with message
-  public async findOrCreate(AFingerprint, BFingerprint, roomId) {
-    
+  //Based on a unique roomId, 
+  //this will return the conversation with message, if not undefined
+  public async findOrCreate(AFingerprint: string, BFingerprint: string, roomId: string) {
+    var conversationData;
     var conversation = await this.createConversation(AFingerprint, BFingerprint, roomId);
-
-    return {
-      messages: await messageModel.getMessagesByIds(conversation.Messages),
-      conversation: conversation
+    if(conversation){
+      var conversationData = {
+        messages: await messageModel.getMessagesByIds(conversation.Messages),
+        conversation: conversation
+      }
     }
+    return conversationData;
   }
 
-  async getConversation(fingerprint){
-    return await ConversationDB.findOne({ '$or': [{ 'AFingerprint': fingerprint }, { 'BFingerprint': fingerprint }] });
-  }
-
-  async updateConversation(roomId, message) {
-    return ConversationDB
+  async updateConversation(roomId: string, message: string) {
+    return await ConversationDB
       .findOneAndUpdate({
         'RoomId': roomId
       }, {
@@ -67,26 +67,15 @@ class Conversation {
       });
   }
 
-  //This will check that a conversation exists, if it does not, it wil return null
-  async checkConversationExists(roomId) {
-    return await ConversationDB.findOne({'RoomId': roomId})
-  }
-
-  async createConversation(AFingerprint, BFingerprint, roomId) {
-
-    var convo = await this.checkConversationExists(roomId);
-
-    if (convo == null) {
-      var newConversation = new ConversationDB({
-        'RoomId': roomId,
-        'AFingerprint': AFingerprint, 
-        'BFingerprint': BFingerprint,
-        'Messages': []
+  async createConversation(roomId: string, AFingerprint: string, BFingerprint: string) {
+    return await ConversationDB.findOneAndUpdate(
+      { 
+        'RoomId': roomId
+      },{ 
+        safe: true,
+        new: true, 
+        upsert: true 
       });
-      return await newConversation.save();
-    } else {
-      return convo;
-    }
   }
 }
 
