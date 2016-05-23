@@ -24,12 +24,14 @@ module.exports = class ChatService {
 
       // Businesses emit this when they go on/off line
       socket.on('business.changeStatus', (data) => {
-        if (data.status === 'online') {
+        if (data.status === 'online') {          
           this.onlineBusinesses.set(data.businessId, socket);
           var business = { socket };
           this.onlineClients.forEach((client, fingerprint, map) => {
             this.joinParticipants(business, client);
+            chatBot.endChat(client.socket);
           });
+
         }
         else { 
           this.onlineBusinesses.delete(data.businessId); 
@@ -69,15 +71,39 @@ module.exports = class ChatService {
       });
 
       socket.on('direct message', (data) => this.forwardMessage(data, socket));
+      
       socket.on('disconnect', ()=> {
         var client = this.onlineClients.get(socket.id);
+        var clientSocket = this.onlineClients.get(socket.id) ? this.onlineClients.get(socket.id).socket : undefined;
         var businessSocket = this.onlineBusinesses.get('DEMO_ID');
-        if (client && businessSocket) {
+        // Client is disconnecting, and business is offline.
+        if (clientSocket && !businessSocket) {
+
+          //Remove the client from online
+          this.onlineClients.delete(socket.id);
+
+          //Inform the business that the client has gone offline
+          businessSocket && businessSocket.emit('client.statusChanged', {
+            status: 'offline',
+            fingerprint: client.fingerprint
+          })
+
+        }
+        // Client is disconnecting, and business is online.
+        else if (clientSocket && businessSocket) {
+          //Remove business from online
+          this.onlineClients.delete(socket.id);
+
           businessSocket.emit('client.statusChanged', {
             status: 'offline',
             fingerprint: client.fingerprint
           })
-        } else {
+
+        }
+        // Busines is refreshing
+        else if (!clientSocket) {
+          this.onlineBusinesses.delete('DEMO_ID')
+
           this.onlineClients.forEach((client, fingerprint, map) => {
             client.socket.emit('business.statusChanged', {
               status: 'offline'
@@ -89,8 +115,6 @@ module.exports = class ChatService {
   }
 
   forwardMessage(data, socket) {
-
-    //Persist
     persist.saveMessage(data.toFingerprint, data.fromFingerprint, data.roomId, data.message);
 
     socket.broadcast.to(data.roomId).emit('direct message', {
@@ -103,7 +127,7 @@ module.exports = class ChatService {
   }
 
   joinParticipants(business, client) {
-    var roomId = [business.fingerprint, client.fingerprint].sort().join('::');
+    var roomId = client.fingerprint;
     [business.socket, client.socket].forEach((s) => {
       s.join(roomId);
       s.emit('client.nowOnline', {

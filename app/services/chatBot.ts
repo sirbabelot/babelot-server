@@ -1,4 +1,5 @@
 var Stately = require('stately.js');
+var persist = require('./Persist.js');
 
 var STATES = {
   HEY_THERE: "hey there!",
@@ -14,6 +15,8 @@ var STATES = {
   I_DONT_UNDERSTAND: "uhm..i don't get it lol :P "
 };
 
+var bot;
+
 // for checking for valid answers to chatBot's questions
 var regex = {
   num_range: /(\d-\d)|(\b(one|two|three|four|five|six|seven|eight|nine|ten|\d)( (to|or|maybe|-) )?\b(one|two|three|four|five|six|seven|eight|nine|ten|\d)?)|(\d)/ig,
@@ -28,9 +31,17 @@ var regex = {
 
 module.exports = {
 
-  chatWith: function(socket) {
+  endChat: function(socket){
+    socket.removeListener('direct message', sockTest);
+  },
 
-    function respond(message) {
+  chatWith: function(socket, client) {
+    
+    async function respond(message) {
+      var toFingerprint = client.fingerprint;
+      var fromFingerprint = 'bablot_portal_experiment';
+      var roomId = client.fingerprint;
+      await persist.saveMessage(toFingerprint, fromFingerprint, roomId, message);
       socket.emit('direct message', { message: message });
     }
 
@@ -159,7 +170,7 @@ module.exports = {
       }
     }
 
-    var bot = Stately.machine(statelyConfig, initialState)
+    bot = Stately.machine(statelyConfig, initialState)
     .bind( function (event, oldState, newState) {
       this[newState].oldState = oldState;
       if (oldState !== newState) {
@@ -168,9 +179,11 @@ module.exports = {
     })
 
     bot.onEnter();
-    socket.on('direct message', (data) => {
-      bot.onInput(data);
-    });
+    socket.on('direct message', sockTest);
   } 
 
 };
+
+function sockTest(data){
+  bot.onInput(data);
+}
