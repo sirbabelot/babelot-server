@@ -21,7 +21,7 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:fingerPrint', async (req, res) => {
-  return res.send(await convo.findById(req.params.fingerPrint));
+  return res.send(await convo.findOne(req.params.fingerPrint));
 });
 
 module.exports = router;

@@ -41,7 +41,7 @@ class Conversation {
 
   //Based on a unique fingerprint, 
   //this will return the conversation with message
-  public async findOrCreate(AFingerprint, BFingerprint, roomId) {
+  public async findOrCreate(AFingerprint: string, BFingerprint: string, roomId: string) {
     
     var conversation = await this.createConversation(AFingerprint, BFingerprint, roomId);
 
@@ -51,11 +51,17 @@ class Conversation {
     }
   }
 
-  async getConversation(fingerprint){
-    return await ConversationDB.findOne({ '$or': [{ 'AFingerprint': fingerprint }, { 'BFingerprint': fingerprint }] });
-  }
+  async findOne(fingerprint: string){
 
-  async updateConversation(roomId, message) {
+    var conversation = await ConversationDB.findOne({ '$or': [{ 'AFingerprint': fingerprint }, { 'BFingerprint': fingerprint }] });
+    
+    return {
+      messages: await messageModel.getMessagesByIds(conversation.Messages),
+      conversation: conversation
+    }
+  }
+  
+  async updateConversation(roomId: string, message: string) {
     return ConversationDB
       .findOneAndUpdate({
         'RoomId': roomId
@@ -68,11 +74,11 @@ class Conversation {
   }
 
   //This will check that a conversation exists, if it does not, it wil return null
-  async checkConversationExists(roomId) {
+  async checkConversationExists(roomId: string) {
     return await ConversationDB.findOne({'RoomId': roomId})
   }
 
-  async createConversation(AFingerprint, BFingerprint, roomId) {
+  async createConversation(AFingerprint: string, BFingerprint: string, roomId: string) {
 
     var convo = await this.checkConversationExists(roomId);
 

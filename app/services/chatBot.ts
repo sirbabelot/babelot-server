@@ -1,4 +1,5 @@
 var Stately = require('stately.js');
+var persist = require('./Persist.js');
 
 var STATES = {
   HEY_THERE: "hey there!",
@@ -34,9 +35,10 @@ module.exports = {
     socket.removeListener('direct message', sockTest);
   },
 
-  chatWith: function(socket) {
-
+  chatWith: function(socket, client) {
+    
     function respond(message) {
+
       socket.emit('direct message', { message: message });
     }
 
