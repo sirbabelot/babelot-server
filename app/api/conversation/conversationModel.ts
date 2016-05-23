@@ -60,7 +60,7 @@ class Conversation {
       conversation: conversation
     }
   }
-  
+
   async updateConversation(roomId: string, message: string) {
     return ConversationDB
       .findOneAndUpdate({
@@ -75,14 +75,15 @@ class Conversation {
 
   //This will check that a conversation exists, if it does not, it wil return null
   async checkConversationExists(roomId: string) {
-    return await ConversationDB.findOne({'RoomId': roomId})
+    var convo = await ConversationDB.findOne({'RoomId': roomId});
+    return  convo ? convo : undefined;
   }
 
   async createConversation(AFingerprint: string, BFingerprint: string, roomId: string) {
 
     var convo = await this.checkConversationExists(roomId);
 
-    if (convo == null) {
+    if (convo == undefined) {
       var newConversation = new ConversationDB({
         'RoomId': roomId,
         'AFingerprint': AFingerprint, 

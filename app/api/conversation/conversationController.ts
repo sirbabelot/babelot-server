@@ -12,15 +12,15 @@ var convo = require('./conversationModel.js');
 
 // router.use(authenticate);
 
-router.get('/preview', async (req, res) => {
+router.get('/preview', async function(req, res)  {
   return res.send(await convo.previewList());
 });
 
-router.get('/', async (req, res) => {
+router.get('/', async function(req, res) {
   return res.send(await convo.all());
 });
 
-router.get('/:fingerPrint', async (req, res) => {
+router.get('/:fingerPrint', async function(req, res) {
   return res.send(await convo.findOne(req.params.fingerPrint));
 });
 

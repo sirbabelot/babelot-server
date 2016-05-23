@@ -13,7 +13,7 @@ var message = require('./messageModel.js');
 // router.use(authenticate);
 
 //Get messages
-router.get('/message', async (req, res) => {
+router.get('/message', async function(req, res) {
   return res.send(await message());
 });
 
