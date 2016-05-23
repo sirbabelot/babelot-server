@@ -37,8 +37,11 @@ module.exports = {
 
   chatWith: function(socket, client) {
     
-    function respond(message) {
-
+    async function respond(message) {
+      var toFingerprint = client.fingerprint;
+      var fromFingerprint = 'bablot_portal_experiment';
+      var roomId = client.fingerprint;
+      await persist.saveMessage(toFingerprint, fromFingerprint, roomId, message);
       socket.emit('direct message', { message: message });
     }
 

@@ -114,8 +114,6 @@ module.exports = class ChatService {
   }
 
   forwardMessage(data, socket) {
-    console.log('Forwarding message');
-    console.log('Room id: ',data.roomId); 
     persist.saveMessage(data.toFingerprint, data.fromFingerprint, data.roomId, data.message);
 
     socket.broadcast.to(data.roomId).emit('direct message', {
