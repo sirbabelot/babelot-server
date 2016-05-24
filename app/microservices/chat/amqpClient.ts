@@ -11,7 +11,6 @@ module.exports = function(message, done) {
           ch.consume(q.queue, function(msg) {
             if (msg.properties.correlationId == corr) {
               var messagesToSend = JSON.parse(msg.content.toString());
-              console.log(' [.] Got %s', messagesToSend);
 
               messagesToSend.forEach((message)=> {
                 done(message);
@@ -21,9 +20,9 @@ module.exports = function(message, done) {
           }, { noAck: true });
 
           ch.sendToQueue('amqpServer:Chat',
-            new Buffer(message), { 
-              correlationId: corr, 
-              replyTo: q.queue 
+            new Buffer(message), {
+              correlationId: corr,
+              replyTo: q.queue
             });
         });
       });

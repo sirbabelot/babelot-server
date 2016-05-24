@@ -45,6 +45,14 @@ app.get('/', (req, res) => {
   res.send('Howdie ho!!')
 });
 
+app.get('/slack', (req, res)=> {
+  let slack = require('./microservices/slack');
+  slack();
+  res.send(200);
+});
+
+var slack = require('./microservices/slack');
+slack();
 
 // Semantic analysis data
 app.post('/tone', (req, res) => {
