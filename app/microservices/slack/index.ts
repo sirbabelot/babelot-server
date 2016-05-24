@@ -14,15 +14,6 @@ function main() {
 
   chatEventEmitter.on('INCOMING_MESSAGE', () => {
     console.log('SLACK SERVICE INCOMING_MESSAGE');
-      // let message = {
-      //   sender_nickname: 'stinky peter',
-      //   message_body: 'Welcome to Canada!',
-      //   to_channel: slackChannel.id
-      // };
-
-      // dispatch.sendMessage(message, (err, chatMessage) => {
-      //   console.log(chatMessage);
-      // });
   });
 
   chatEventEmitter.on('NEW_CONVERSATION', (channelRequest) => {
