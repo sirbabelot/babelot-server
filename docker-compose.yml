@@ -2,7 +2,6 @@ version: '2'
 services:
   app:
     links:
-      - pg
       - rabbitmq:amq
     environment:
       - PGHOST=pg
@@ -14,12 +13,6 @@ services:
       - app:node
     ports:
       - "9000:9000"
-
-  pg:
-    logging:
-      driver: "none"
-    ports:
-      - "5432:5432"
 
   chindow:
     image: bablot/chindow

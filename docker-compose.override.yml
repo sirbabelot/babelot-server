@@ -12,9 +12,6 @@ services:
   nginx:
     build: ./nginx
 
-  pg:
-    build: ./postgres
-
   slack:
     build: ./slack
     command: npm start
