@@ -3,6 +3,7 @@ services:
   app:
     build: ./app
     volumes:
+      - ./protos:/usr/src/app/protos
       - ./app:/usr/src/app
       - /usr/src/app/node_modules
     environment:
@@ -13,6 +14,14 @@ services:
 
   pg:
     build: ./postgres
+
+  slack:
+    build: ./slack
+    command: npm start
+    volumes:
+      - ./protos:/usr/src/app/protos
+      - ./slack/src:/usr/src/app
+      - /usr/src/app/node_modules
 
   chatterpillar:
     build: ./chatterpillar

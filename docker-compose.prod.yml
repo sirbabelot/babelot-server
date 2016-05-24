@@ -11,6 +11,9 @@ services:
   pg:
     image: bablot/postgres
 
+  slack:
+    image: bablot/slack
+
   chatterpillar:
     image: bablot/chatterpillar
     command: npm start

@@ -41,7 +41,7 @@ class Conversation {
     return data;
   }
 
-  //Based on a unique roomId, 
+  //Based on a unique roomId,
   //this will return the conversation with message, if not undefined
   public async findOrCreate(AFingerprint: string, BFingerprint: string, roomId: string) {
     var conversationData:any;
@@ -69,12 +69,12 @@ class Conversation {
 
   async createConversation(roomId: string, AFingerprint: string, BFingerprint: string) {
     return await ConversationDB.findOneAndUpdate(
-      { 
+      {
         'RoomId': roomId
-      },{ 
+      },{
         safe: true,
-        new: true, 
-        upsert: true 
+        new: true,
+        upsert: true
       });
   }
 }

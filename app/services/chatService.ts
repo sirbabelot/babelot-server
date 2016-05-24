@@ -1,16 +1,24 @@
 /// <reference path="./../typings/node.d.ts" />
 "use strict";
-var generateName = require('sillyname');
-var chatBot = require('./chatBot');
-var chatHandler = require('../microservices/chat/chatHandler');
 var Client = require('./Client');
+var chatBot = require('./chatBot');
+var chatEventEmitter = require('./ChatEventEmitter');
+var chatHandler = require('../microservices/chat/chatHandler');
+var generateName = require('sillyname');
+var grpc = require('grpc');
+var path = require('path');
 var persist = require('./Persist.js');
+
+
+var PROTO_PATH = path.resolve(__dirname, '../../protos/slack.proto');
+var slack = grpc.load(PROTO_PATH).slack;
 
 module.exports = class ChatService {
 
   public onlineBusinesses: any;
   public onlineClients: any;
   public namespace: string = '/DEMO_ID';
+  public chatEventEmitter = chatEventEmitter;
 
   constructor(private io) {
     this.onlineBusinesses = new Map();
@@ -24,7 +32,7 @@ module.exports = class ChatService {
 
       // Businesses emit this when they go on/off line
       socket.on('business.changeStatus', (data) => {
-        if (data.status === 'online') {          
+        if (data.status === 'online') {
           this.onlineBusinesses.set(data.businessId, socket);
           var business = { socket };
           this.onlineClients.forEach((client, fingerprint, map) => {
@@ -33,8 +41,8 @@ module.exports = class ChatService {
           });
 
         }
-        else { 
-          this.onlineBusinesses.delete(data.businessId); 
+        else {
+          this.onlineBusinesses.delete(data.businessId);
         }
 
         socket.emit('business.statusChanged', { status: data.status });
@@ -47,6 +55,11 @@ module.exports = class ChatService {
         if (!data.clientInfo.nickname) {
           data.clientInfo.nickname = generateName();
         }
+
+        // Emit a message for all dispatch channels to listen
+        var channelRequest = new slack.ChannelRequest(data.clientInfo.nickname);
+        this.chatEventEmitter.emit('NEW_CONVERSATION', channelRequest);
+
         var client = new Client(socket,
             data.clientInfo.fingerprint,
             data.clientInfo.nickname);
@@ -65,13 +78,13 @@ module.exports = class ChatService {
           this.io.of(this.namespace).emit('business.statusChanged',
             { status: 'online' });
         }
-        else { 
+        else {
           chatHandler.addEventHandlerToSocket(socket);
         }
       });
 
       socket.on('direct message', (data) => this.forwardMessage(data, socket));
-      
+
       socket.on('disconnect', ()=> {
         var client = this.onlineClients.get(socket.id);
         var clientSocket = this.onlineClients.get(socket.id) ? this.onlineClients.get(socket.id).socket : undefined;
@@ -115,6 +128,8 @@ module.exports = class ChatService {
   }
 
   forwardMessage(data, socket) {
+
+    this.chatEventEmitter.emit('INCOMING_MESSAGE');
     persist.saveMessage(data.toFingerprint, data.fromFingerprint, data.roomId, data.message);
 
     socket.broadcast.to(data.roomId).emit('direct message', {

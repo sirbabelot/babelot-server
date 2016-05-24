@@ -13,8 +13,6 @@ function rabbitConnect() {
 
 rabbitConnect().then((connection)=> {
   return connection.createChannel().then((ch)=> {
-    console.log('connection established');
-
     var q = 'amqpServer:Chat';
     ch.assertQueue(q);
     ch.prefetch(1);
