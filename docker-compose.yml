@@ -22,6 +22,8 @@ services:
   chindow:
     image: bablot/chindow
 
+  chatterpillar:
+
   rabbitmq:
     image: rabbitmq:3
     ports:

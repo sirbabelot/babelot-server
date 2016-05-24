@@ -6,6 +6,7 @@ var bodyParser = require('body-parser');
 var cors = require('./middleware/cors.js');
 var request = require('superagent');
 
+
 /* routers */
 var conversationController = require('./api/conversation/conversationController.js');
 var messageController = require('./api/message/messageController.js');
@@ -40,9 +41,10 @@ app.get('/script/:businessId', (req, res)=> {
 app.use('/message', messageController);
 app.use('/conversation', conversationController)
 
-app.get('/', (req, res)=> {
+app.get('/', (req, res) => {
   res.send('Howdie ho!!')
-})
+});
+
 
 // Semantic analysis data
 app.post('/tone', (req, res) => {

@@ -14,4 +14,10 @@ services:
   pg:
     build: ./postgres
 
+  chatterpillar:
+    build: ./chatterpillar
+    volumes:
+      - ./chatterpillar:/usr/src/chatterpillar
+      - /usr/src/chatterpillar/node_modules
+    command: npm run dev
 
