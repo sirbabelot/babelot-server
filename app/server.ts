@@ -6,12 +6,11 @@ var bodyParser = require('body-parser');
 var cors = require('./middleware/cors.js');
 var request = require('superagent');
 
-
-/* routers */
+// API 
 var conversationController = require('./api/conversation/conversationController.js');
 var messageController = require('./api/message/messageController.js');
 
-/* app */
+// APP 
 var app = express();
 var request = require("request");
 var server = require('http').Server(app);
@@ -24,7 +23,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.raw());
 app.use(bodyParser.text());
 
-/* Start up the chat service */
+// CHAT SERVICE
 let ChatService = require('./services/chatService.js');
 let chatService = new ChatService(io);
 chatService.init();
@@ -37,7 +36,7 @@ app.get('/script/:businessId', (req, res) => {
   });
 });
 
-/* Routers */
+// ROUTERS 
 app.use('/message', messageController);
 app.use('/conversation', conversationController)
 
