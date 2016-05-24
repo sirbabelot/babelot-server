@@ -13,3 +13,7 @@ services:
 
   slack:
     image: bablot/slack
+
+  chatterpillar:
+    image: bablot/chatterpillar
+    command: npm start

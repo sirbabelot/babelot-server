@@ -44,10 +44,10 @@ class Conversation {
   //Based on a unique roomId,
   //this will return the conversation with message, if not undefined
   public async findOrCreate(AFingerprint: string, BFingerprint: string, roomId: string) {
-    var conversationData;
+    var conversationData:any;
     var conversation = await this.createConversation(AFingerprint, BFingerprint, roomId);
     if(conversation){
-      var conversationData:any = {
+      conversationData = {
         messages: await messageModel.getMessagesByIds(conversation.Messages),
         conversation: conversation
       }

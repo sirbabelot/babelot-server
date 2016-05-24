@@ -12,9 +12,13 @@ after_success:
   - docker build -t bablot/app ./app
   - docker build -t bablot/nginx ./nginx
   - docker build -t bablot/postgres ./postgres
+  - docker build -t bablot/chatterpillar ./chatterpillar
+  - docker build -t bablot/slack ./slack
   - docker push bablot/app
   - docker push bablot/nginx
   - docker push bablot/postgres
+  - docker push bablot/chatterpillar
+  - docker push bablot/slack
   - chmod 600 deploy_key
   - ./node_modules/.bin/shipit staging deploy
 branches:
