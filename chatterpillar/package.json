@@ -11,10 +11,12 @@
   },
   "devDependencies": {},
   "scripts": {
-    "build": "./node_modules/.bin/tsc --outDir ./.tmp",
-    "build:w": "./node_modules/.bin/tsc -watch --outDir ./.tmp &",
+    "build": "tsc --outDir ./.tmp",
+    "build:w": "tsc -watch --outDir ./.tmp &",
     "predev": "npm run build:w",
-    "dev": "./node_modules/.bin/nodemon -L ./.tmp/amqpServer.js --watch ./.tmp/ --use_strict",
+    "dev": "nodemon -L ./.tmp/amqpServer.js --watch ./.tmp/ --use_strict",
+    "prestart": "npm run build",
+    "start": "nodemon ./.tmp/amqpServer.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "bablot",

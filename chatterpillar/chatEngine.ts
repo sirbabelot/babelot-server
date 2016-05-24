@@ -89,7 +89,6 @@ var statelyConfig = {
       } else {
         return ['MAX_PRICE', `${STATES.I_DONT_UNDERSTAND};${STATES.MAX_PRICE}`];
       }
-      return ['ANYTHING_ELSE', STATES.ANYTHING_ELSE]
     }
   }),
   "ANYTHING_ELSE": new State({
@@ -121,6 +120,7 @@ var statelyConfig = {
       } else {
         return ['YOU_AGAIN', `${STATES.I_DONT_UNDERSTAND};${STATES.YOU_AGAIN}`];
       }
+    }
   }),
   "NO_HELP": new State({
     onEnter: function() {
