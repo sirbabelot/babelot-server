@@ -10,3 +10,7 @@ services:
 
   pg:
     image: bablot/postgres
+
+  chatterpillar:
+    image: bablot/chatterpillar
+    command: npm start
