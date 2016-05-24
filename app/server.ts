@@ -1,9 +1,8 @@
 /// <reference path="./typings/node.d.ts" />
 "use strict";
-require('dotenv').load();
-var express = require('express');
 var bodyParser = require('body-parser');
 var cors = require('./middleware/cors.js');
+var express = require('express');
 var request = require('superagent');
 
 
@@ -42,7 +41,7 @@ app.use('/message', messageController);
 app.use('/conversation', conversationController)
 
 app.get('/', (req, res) => {
-  res.send('Howdie ho!!')
+  res.send('Howdie lemmons!!')
 });
 
 app.get('/slack', (req, res)=> {

@@ -4,6 +4,7 @@ services:
     image: bablot/app
     environment:
       MONGO_URI: 'mongodb://sirblabsalot:bluecakes@ds061984.mlab.com:61984/bablot'
+    command: npm start
 
   nginx:
     image: bablot/nginx

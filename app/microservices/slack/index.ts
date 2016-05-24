@@ -21,7 +21,7 @@ function main() {
   let dispatch = new slack.Dispatch('slack:50051', grpc.credentials.createInsecure());
 
   chatEventEmitter.on('INCOMING_MESSAGE', () => {
-    console.log('SLACK SERVICE INCOMING_MESSAGE');
+    // console.log('SLACK SERVICE INCOMING_MESSAGE');
   });
 
   chatEventEmitter.on('NEW_CONVERSATION', (channelRequest) => {
@@ -30,11 +30,11 @@ function main() {
       channel_name: name
     };
 
-    console.log('SENDING: ', channelRequest2);
+    // console.log('SENDING: ', channelRequest2);
 
     dispatch.createChannel(channelRequest2, (err, slackChannel) => {
-      console.log('GRPC_ERR: ', err);
-      console.log('GRPC_RES: ', slackChannel);
+      // console.log('GRPC_ERR: ', err);
+      // console.log('GRPC_RES: ', slackChannel);
     });
   });
 }

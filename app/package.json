@@ -7,12 +7,13 @@
     "node": "5.3.0"
   },
   "scripts": {
-    "test": "mocha --reporter spec './.tmp/api/**/*.test.js' ",
+    "test": "echo \"No tests specified\" && exit 0",
     "build": "tsc --outDir ./.tmp",
-    "build:w": "./node_modules/.bin/tsc -watch --outDir ./.tmp &",
+    "build:w": "tsc -watch --outDir ./.tmp &",
     "prestart": "npm run build",
-    "start": "./node_modules/.bin/nodemon -L ./.tmp/server.js --watch ./.tmp/ --use_strict",
-    "debug": "node-debug server --use_strict"
+    "start": "nodemon ./.tmp/server.js",
+    "predev": "npm run build:w",
+    "dev": "nodemon -L ./.tmp/server.js --watch ./.tmp/ --use_strict"
   },
   "repository": {
     "type": "git",
@@ -38,23 +39,12 @@
     "expect": "1.14.0",
     "express": "^4.13.4",
     "express-jwt": "3.3.0",
-    "fs": "0.0.2",
-    "fs-promise": "0.4.1",
-    "googleapis": "^2.1.7",
-    "https": "1.0.0",
-    "knex": "0.10.0",
-    "mocha-co": "1.17.1",
     "mongoose": "^4.4.16",
-    "node-fetch": "1.4.1",
-    "node-inspector": "0.12.7",
     "nodemon": "1.9.1",
-    "pg": "4.4.6",
-    "sequelize": "3.19.3",
     "sillyname": "0.1.0",
     "socket.io": "1.4.5",
     "stately.js": "^1.3.0",
     "superagent": "1.8.2",
-    "twilio": "2.9.0",
     "typescript": "1.8.7",
     "url": "0.11.0",
     "watson-developer-cloud": "1.3.1"
