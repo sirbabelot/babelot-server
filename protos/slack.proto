@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package slack;
+
+// The Dispatch service definition.
+service Dispatch {
+  rpc SendMessage (ChatMessage) returns (ChatMessage) {}
+  rpc CreateChannel (ChannelRequest) returns (SlackChannel) {}
+}
+
+// The details of a channel to be created
+message ChannelRequest {
+  string channel_name = 1;
+}
+
+// A message from any user to any channel
+message ChatMessage {
+  string sender_nickname = 1;
+  string message_body = 2;
+  string to_channel = 3;
+}
+
+// The response message containing the created channel details
+message SlackChannel {
+  string id = 1;
+  string name = 2;
+  int32 created = 3;
+  string creator = 4;
+  repeated string members = 5;
+}

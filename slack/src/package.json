@@ -1,0 +1,22 @@
+{
+  "name": "slack-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 0",
+    "start": "nodemon -L ./grpcServer.js --watch ./"
+  },
+  "author": "Dylan Harness <dharness@uwo.ca>",
+  "license": "ISC",
+  "dependencies": {
+    "@slack/client": "3.1.1",
+    "amqplib": "0.4.1",
+    "express": "4.13.4",
+    "superagent": "2.0.0-alpha.3",
+    "grpc": "0.14.1"
+  },
+  "devDependencies": {
+    "nodemon": "1.9.2"
+  }
+}

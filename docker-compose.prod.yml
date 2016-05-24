@@ -10,3 +10,6 @@ services:
 
   pg:
     image: bablot/postgres
+
+  slack:
+    image: bablot/slack
