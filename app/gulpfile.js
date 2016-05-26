@@ -1,17 +1,30 @@
 "use strict";
-var gulp = require('gulp');
 var ts = require('gulp-typescript');
 var tsconfig = require('./tsconfig.json');
-let tsPath = './**/*.ts';
+var tslint = require("gulp-tslint");
+var gulp = require('gulp');
 
 
-gulp.task('build', ()=> {
+const TS_PATH = './**/*.ts';
+const NODE_MODULES_PATH = 'node_modules/**/*';
+
+gulp.task('lint', () => {
+  gulp.src('./*.ts')
+    .pipe(tslint())
+    .pipe(tslint.report("prose", {
+      summarizeFailureOutput: true,
+      emitError: false
+    }));
+});
+
+
+gulp.task('build', () => {
   let outDir = '.tmp/';
-  gulp.src(['**/*.ts', '!node_modules/**/*'])
+  gulp.src([TS_PATH, `!${NODE_MODULES_PATH}`])
     .pipe(ts(tsconfig.compilerOptions))
     .pipe(gulp.dest(outDir));
 });
 
-gulp.task('build:w', ['build'], ()=> {
-  gulp.watch(tsPath, ['build']);
+gulp.task('build:w', ['build'], () => {
+  gulp.watch(TS_PATH, ['build']);
 });

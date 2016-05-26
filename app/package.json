@@ -46,6 +46,8 @@
   "devDependencies": {
     "babel-plugin-transform-object-rest-spread": "^6.6.5",
     "gulp": "^3.9.1",
-    "gulp-typescript": "^2.13.4"
+    "gulp-tslint": "^5.0.0",
+    "gulp-typescript": "^2.13.4",
+    "tslint": "^3.10.2"
   }
 }

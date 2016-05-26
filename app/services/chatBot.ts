@@ -1,3 +1,4 @@
+"use strict";
 var Stately = require('stately.js');
 var persist = require('./Persist.js');
 
@@ -36,7 +37,7 @@ module.exports = {
   },
 
   chatWith: function(socket, client) {
-    
+
     async function respond(message) {
       var toFingerprint = client.fingerprint;
       var fromFingerprint = 'bablot_portal_experiment';
@@ -55,7 +56,7 @@ module.exports = {
           var stateName = this.name || this.getMachineState()
           if (this.oldState !== 'I_DONT_UNDERSTAND') {
             respond(STATES.HEY_THERE);
-          } 
+          }
           respond(STATES[stateName]);
         },
         onInput: function(input) {
@@ -145,7 +146,7 @@ module.exports = {
       },
 
       "YOU_AGAIN": {
-        onEnter: function() { 
+        onEnter: function() {
           if (this.oldState !== 'I_DONT_UNDERSTAND') {
             respond(STATES.HEY_THERE);
           }
@@ -161,7 +162,7 @@ module.exports = {
           }
         }
       },
-      
+
       "I_DONT_UNDERSTAND": {
         onEnter: function(stateStore) {
           respond(STATES[this.name]);
@@ -180,7 +181,7 @@ module.exports = {
 
     bot.onEnter();
     socket.on('direct message', sockTest);
-  } 
+  }
 
 };
 
