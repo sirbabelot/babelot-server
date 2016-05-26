@@ -1,4 +1,4 @@
-/// <reference path="./typings/node.d.ts" />
+/// <reference path="./typings/index.d.ts" />
 "use strict";
 var bodyParser = require('body-parser');
 var cors = require('./middleware/cors.js');
@@ -36,12 +36,13 @@ app.get('/script/:businessId', (req, res)=> {
   });
 });
 
+
 // ROUTERS
 app.use('/message', messageController);
 app.use('/conversation', conversationController)
 
 app.get('/', (req, res) => {
-  res.send('Howdie lemmons!!')
+  res.send('Howdie andrew Dylan!!');
 });
 
 app.get('/slack', (req, res)=> {

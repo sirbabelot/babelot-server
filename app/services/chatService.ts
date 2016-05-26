@@ -1,4 +1,3 @@
-/// <reference path="./../typings/node.d.ts" />
 "use strict";
 var Client = require('./Client');
 var chatBot = require('./chatBot');
