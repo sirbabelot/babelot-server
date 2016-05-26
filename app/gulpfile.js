@@ -6,6 +6,7 @@ var gulp = require('gulp');
 
 
 const TS_PATH = './**/*.ts';
+const NODE_MODULES_PATH = 'node_modules/**/*';
 
 gulp.task('lint', () => {
   gulp.src('./*.ts')
@@ -19,7 +20,7 @@ gulp.task('lint', () => {
 
 gulp.task('build', () => {
   let outDir = '.tmp/';
-  gulp.src([TS_PATH, '!node_modules/**/*'])
+  gulp.src([TS_PATH, `!${NODE_MODULES_PATH}`])
     .pipe(ts(tsconfig.compilerOptions))
     .pipe(gulp.dest(outDir));
 });
