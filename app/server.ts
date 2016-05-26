@@ -3,7 +3,6 @@
 var bodyParser = require('body-parser');
 var cors = require('./middleware/cors.js');
 var express = require('express');
-var request = require('superagent');
 
 // API
 var conversationController = require('./api/conversation/conversationController.js');
@@ -11,7 +10,6 @@ var messageController = require('./api/message/messageController.js');
 
 // APP
 var app = express();
-var request = require("request");
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var PORT = process.env.PORT || 9000;
