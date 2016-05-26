@@ -31,18 +31,6 @@ var chat = new Chat(io);
 chat.init();
 
 /**
- * Connects to the chindow service to generate
- * a chindow script for a particular businessId
- */
-app.get('/script/:businessId', (req, res) => {
-  let path = __dirname + '/test.js';
-  let chindow = require('./services/chindow.js');
-  chindow(req.params.businessId, (file) => {
-    return res.send(file);
-  });
-});
-
-/**
  * Returns status codes for each subsystem
  * TODO (dharness): statuses aside from api are
  *   hardcoded right now until mechanisms can

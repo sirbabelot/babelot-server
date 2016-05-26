@@ -1,7 +1,7 @@
 "use strict";
-
 var ConversationDB = require('../../schemas/conversationSchema.js');
 var messageModel = require('../message/messageModel.js');
+
 
 class Conversation {
   async all() {
