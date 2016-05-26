@@ -1,15 +1,15 @@
-/// <reference path="./typings/node.d.ts" />
+/// <reference path="./typings/index.d.ts" />
 "use strict";
 var bodyParser = require('body-parser');
 var cors = require('./middleware/cors.js');
 var express = require('express');
 var request = require('superagent');
 
-// API 
+// API
 var conversationController = require('./api/conversation/conversationController.js');
 var messageController = require('./api/message/messageController.js');
 
-// APP 
+// APP
 var app = express();
 var request = require("request");
 var server = require('http').Server(app);
@@ -23,9 +23,9 @@ app.use(bodyParser.raw());
 app.use(bodyParser.text());
 
 // CHAT SERVICE
-let ChatService = require('./services/chatService.js');
-let chatService = new ChatService(io);
-chatService.init();
+var Chat = require('./services/chatService.js');
+var chat = new Chat(io);
+chat.init();
 
 app.get('/script/:businessId', (req, res) => {
   var path = __dirname + '/test.js';
@@ -35,12 +35,12 @@ app.get('/script/:businessId', (req, res) => {
   });
 });
 
-// ROUTERS 
+// ROUTERS
 app.use('/message', messageController);
 app.use('/conversation', conversationController)
 
 app.get('/', (req, res) => {
-  res.send('Howdie lemmons!!')
+  res.send('Howdie andrew Dylan!!');
 });
 
 app.get('/slack', (req, res) => {
