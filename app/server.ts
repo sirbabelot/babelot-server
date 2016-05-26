@@ -1,6 +1,5 @@
 /// <reference path="./typings/index.d.ts" />
 'use strict';
-var bodyParser = require('body-parser');
 var cors = require('./middleware/cors.js');
 var express = require('express');
 var http = require('http');
@@ -17,10 +16,7 @@ var io = socketio(server);
 
 // Middleware
 app.use(cors);
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.raw());
-app.use(bodyParser.text());
+
 // Routers
 app.use('/message', messageController);
 app.use('/conversation', conversationController);
