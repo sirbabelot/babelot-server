@@ -9,10 +9,10 @@ addons:
   - 162.243.218.96
 after_success:
   - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-  - docker build -t bablot/app ./app
-  - docker build -t bablot/nginx ./nginx
-  - docker build -t bablot/chatterpillar ./chatterpillar
-  - docker build -t bablot/slack ./slack
+  - docker-compose -f docker-compose.yml -f docker-compose.override.yml -f docker-compose.prod.yml build app
+  - docker-compose -f docker-compose.yml -f docker-compose.override.yml -f docker-compose.prod.yml build nginx
+  - docker-compose -f docker-compose.yml -f docker-compose.override.yml -f docker-compose.prod.yml build chatterpillar
+  - docker-compose -f docker-compose.yml -f docker-compose.override.yml -f docker-compose.prod.yml build slack
   - docker push bablot/app
   - docker push bablot/nginx
   - docker push bablot/chatterpillar
@@ -22,7 +22,6 @@ after_success:
 branches:
   only:
   - master
-  - travis
 before_install:
   - openssl aes-256-cbc -K $encrypted_39780c9b113a_key -iv $encrypted_39780c9b113a_iv
     -in deploy_key.enc -out deploy_key -d

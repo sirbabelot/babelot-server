@@ -14,9 +14,6 @@ services:
     ports:
       - "9000:9000"
 
-  chindow:
-    image: bablot/chindow
-
   slack:
     dns: 8.8.8.8
     ports:
