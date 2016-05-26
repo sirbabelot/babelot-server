@@ -4,7 +4,7 @@ var conversationModel = require('api/conversation/conversationModel.js');
 
 
 class Persist {
-  async saveMessage(toFingerprint: string, fromFingerprint: string,
+  public async saveMessage(toFingerprint: string, fromFingerprint: string,
         roomId: string, messageBody: string) {
     var conversation = await conversationModel.findOrCreate(roomId, toFingerprint, fromFingerprint);
     var savedMessages = await messageModel.saveMessage(toFingerprint, fromFingerprint, messageBody);
