@@ -1,12 +1,12 @@
 "use strict";
-var Client = require('./Client');
-var chatBot = require('./chatBot');
-var chatEventEmitter = require('./ChatEventEmitter');
-var chatHandler = require('../microservices/chat/chatHandler');
+var Client = require('services/Client.js');
+var chatBot = require('services/chatBot.js');
+var chatEventEmitter = require('services/ChatEventEmitter.js');
+var chatHandler = require('microservices/chat/chatHandler.js');
 var generateName = require('sillyname');
 var grpc = require('grpc');
 var path = require('path');
-var persist = require('./Persist.js');
+var persist = require('services/Persist.js');
 
 
 var PROTO_PATH = path.resolve(__dirname, '../../protos/slack.proto');

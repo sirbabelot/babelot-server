@@ -1,6 +1,7 @@
 "use strict";
-var amqpClient = require('./amqpClient.js');
-var persist = require('../../services/Persist.js');
+var amqpClient = require('microservices/chat/amqpClient.js');
+var persist = require('services/Persist.js');
+
 
 async function persistChatBotMessage(message, client) {
   var toFingerprint = client.fingerprint;
@@ -8,7 +9,6 @@ async function persistChatBotMessage(message, client) {
   var roomId = client.fingerprint;
   await persist.saveMessage(toFingerprint, fromFingerprint, roomId, message);
 }
-
 
 // Hack, but a small one
 var send2;

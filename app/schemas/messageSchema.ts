@@ -1,5 +1,5 @@
 "use strict";
-var mongoose = require('../config/connections.js').mongo;
+var mongoose = require('config/connections.js').mongo;
 
 var messageSchema = mongoose.Schema({
   Date: { type: Date, default: Date.now },

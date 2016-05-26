@@ -1,12 +1,14 @@
 /// <reference path="./typings/index.d.ts" />
 'use strict';
-var cors = require('./middleware/cors.js');
+require('app-module-path').addPath(__dirname);;
+var Chat = require('services/chatService.js');
+var cors = require('middleware/cors.js');
 var express = require('express');
 var http = require('http');
 var socketio = require('socket.io');
 // Controllers
-var conversationController = require('./api/conversation/conversationController.js');
-var messageController = require('./api/message/messageController.js');
+var conversationController = require('api/conversation/conversationController.js');
+var messageController = require('api/message/messageController.js');
 
 
 const PORT = process.env.PORT || 9000;
@@ -17,12 +19,12 @@ var io = socketio(server);
 // Middleware
 app.use(cors);
 
+
 // Routers
 app.use('/message', messageController);
 app.use('/conversation', conversationController);
 
 // Chat Service
-var Chat = require('./services/chatService.js');
 var chat = new Chat(io);
 chat.init();
 

@@ -1,6 +1,6 @@
 "use strict";
 var Stately = require('stately.js');
-var persist = require('./Persist.js');
+var persist = require('services/Persist.js');
 
 var STATES = {
   HEY_THERE: "hey there!",

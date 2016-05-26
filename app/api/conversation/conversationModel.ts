@@ -1,6 +1,5 @@
 "use strict";
-var ConversationDB = require('../../schemas/conversationSchema.js');
-var messageModel = require('../message/messageModel.js');
+var ConversationDB = require('schemas/conversationSchema.js');
 
 
 class Conversation {
