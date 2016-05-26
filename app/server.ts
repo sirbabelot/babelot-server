@@ -1,6 +1,5 @@
 /// <reference path="./typings/index.d.ts" />
 'use strict';
-var bodyParser = require('body-parser');
 var cors = require('./middleware/cors.js');
 var express = require('express');
 var http = require('http');
