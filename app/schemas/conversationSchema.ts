@@ -1,6 +1,7 @@
 "use strict";
 var mongoose = require('../config/connections.js').mongo;
 
+
 var conversationSchema = mongoose.Schema({
   Date: { type: Date, default: Date.now },
   AFingerprint: String,
