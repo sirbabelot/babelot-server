@@ -1,5 +1,5 @@
 "use strict";
-var convo = require('./conversationModel.js');
+var convo = require('api/conversation/conversationModel.js');
 var express = require('express');
 var jwt = require('express-jwt');
 var router = express.Router();

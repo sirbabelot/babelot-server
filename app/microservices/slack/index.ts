@@ -7,12 +7,12 @@
  * NOTE(dharness): This file is under active development and its interface
  * is subject to breaking changes.
  */
-var chatEventEmitter = require('../../services/ChatEventEmitter.js');
+var chatEventEmitter = require('services/ChatEventEmitter.js');
 var grpc = require('grpc');
 var path = require('path');
 
 
-var PROTO_PATH = path.resolve(__dirname, '../../../protos/slack.proto');
+var PROTO_PATH = path.resolve(__dirname, 'protos/slack.proto');
 var slack = grpc.load(PROTO_PATH).slack;
 
 
