@@ -1,0 +1,6 @@
+{
+  "rules": {
+    "quotemark": [true, "single"],
+    "use-strict": [true, "check-module", "check-function"]
+  }
+}
