@@ -44,6 +44,9 @@ app.get('/script/:businessId', (req, res) => {
 
 /**
  * Returns status codes for each subsystem
+ * TODO (dharness): statuses aside from api are
+ *   hardcoded right now until mechanisms can
+ *   be put in place to properly check their status
  */
 app.get('/status', (req, res) => {
   let status = {
