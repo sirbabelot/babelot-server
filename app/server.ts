@@ -1,6 +1,6 @@
 /// <reference path="./typings/index.d.ts" />
 'use strict';
-require('app-module-path').addPath(__dirname);;
+require('app-module-path').addPath(__dirname);
 var Chat = require('services/chatService.js');
 var cors = require('middleware/cors.js');
 var express = require('express');
@@ -18,7 +18,6 @@ var io = socketio(server);
 
 // Middleware
 app.use(cors);
-
 
 // Routers
 app.use('/message', messageController);
