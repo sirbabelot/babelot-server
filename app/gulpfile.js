@@ -1,8 +1,8 @@
 "use strict";
-let ts = require('gulp-typescript');
-let tsconfig = require('./tsconfig.json');
-let tslint = require("gulp-tslint");
-let gulp = require('gulp');
+var ts = require('gulp-typescript');
+var tsconfig = require('./tsconfig.json');
+var tslint = require("gulp-tslint");
+var gulp = require('gulp');
 
 
 const TS_PATH = './**/*.ts';
