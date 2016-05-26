@@ -1,11 +1,11 @@
 "use strict";
 var amqp = require('amqplib/callback_api');
 
-module.exports = function(message, done) {
+module.exports = {
+  sendMessage: function(message, done) {
+    amqp.connect(`amqp://rabbitmq:5672`, (err, connection) => {
 
-  amqp.connect(`amqp://rabbitmq:5672`, (err, connection) => {
-
-    connection.createChannel(function(err, ch) {
+      connection.createChannel(function(err, ch) {
         ch.assertQueue('', { exclusive: true }, function(err, q) {
           var corr = Math.random().toString();
 
@@ -13,7 +13,7 @@ module.exports = function(message, done) {
             if (msg.properties.correlationId == corr) {
               var messagesToSend = JSON.parse(msg.content.toString());
 
-              messagesToSend.forEach((message)=> {
+              messagesToSend.forEach((message) => {
                 done(message);
               });
 
@@ -29,5 +29,5 @@ module.exports = function(message, done) {
       });
     });
 
+  }
 }
-

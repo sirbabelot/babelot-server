@@ -36,7 +36,7 @@ module.exports = class ChatService {
           var business = { socket };
           this.onlineClients.forEach((client, fingerprint, map) => {
             this.joinParticipants(business, client);
-            chatBot.endChat(client.socket);
+            chatHandler.endChat(client.socket);
           });
 
         }
@@ -78,7 +78,7 @@ module.exports = class ChatService {
             { status: 'online' });
         }
         else {
-          chatHandler.addEventHandlerToSocket(socket);
+          chatHandler.addEventHandlerToSocket(socket, client);
         }
       });
 

@@ -1,17 +1,35 @@
 "use strict";
-var chatClient = require('./amqpClient.js');
+var amqpClient = require('./amqpClient.js');
+var persist = require('../../services/Persist.js');
+
+async function persistChatBotMessage(message, client) {
+  var toFingerprint = client.fingerprint;
+  var fromFingerprint = 'bablot_portal_experiment';
+  var roomId = client.fingerprint;
+  await persist.saveMessage(toFingerprint, fromFingerprint, roomId, message);
+}
+
+
+// Hack, but a small one
+var send2;
 
 module.exports = {
-  addEventHandlerToSocket: function(socket) {
 
-    chatClient('reset conversation', function(message) {
+  addEventHandlerToSocket: function(socket, client) {
+    amqpClient.sendMessage('reset conversation', (message) => {
+      persistChatBotMessage(message, client);
       socket.emit('direct message', { message: message });
     });
 
-    socket.on('direct message', (data) => {
-      chatClient(data.message, function(message) {
+    socket.on('direct message', send2 = (data) => {
+      amqpClient.sendMessage(data.message, (message) => {
+        persistChatBotMessage(message, client);
         socket.emit('direct message', { message: message });
       });
     });
+  },
+
+  endChat: function(socket) {
+    socket.removeListener('direct message', send2);
   }
-}
+};

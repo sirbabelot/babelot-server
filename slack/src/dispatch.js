@@ -21,17 +21,17 @@ module.exports = {
   createChannel(call, callback) {
     let channelName = call.request.channel_name;
     // console.log('RECEIVED: ', call.request);
-    request
-      .get(`https://slack.com/api/channels.join?token=xoxp-44836723207-44833254160-44829737686-9e738c024a&name=${channelName}&pretty=1`)
-      .end((err, res)=> {
-        // console.log('RES.BODY: ', res.body);
-        callback(null, {
-          id: 'res.body.channel.id',
-          name: 'res.body.channel.name',
-          created: 7,
-          creator: 'res.body.channel.creator',
-          members: 'res.body.channel.members'
-        });
-      });
+    // request
+    //   .get(`https://slack.com/api/channels.join?token=xoxp-44836723207-44833254160-44829737686-9e738c024a&name=${channelName}&pretty=1`)
+    //   .end((err, res)=> {
+    //     // console.log('RES.BODY: ', res.body);
+    //     callback(null, {
+    //       id: 'res.body.channel.id',
+    //       name: 'res.body.channel.name',
+    //       created: 7,
+    //       creator: 'res.body.channel.creator',
+    //       members: 'res.body.channel.members'
+    //     });
+    //   });
   }
 }
