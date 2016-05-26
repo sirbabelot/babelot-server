@@ -24,8 +24,8 @@ app.use(bodyParser.text());
 
 // CHAT SERVICE
 var Chat = require('./services/chatService.js');
-var _chatService = new Chat(io);
-_chatService.init();
+var chat = new Chat(io);
+chat.init();
 
 app.get('/script/:businessId', (req, res) => {
   var path = __dirname + '/test.js';
