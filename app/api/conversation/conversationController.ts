@@ -9,12 +9,8 @@ router.get('/preview', async function(req, res)  {
   return res.send(await convo.previewList());
 });
 
-router.get('/', async function(req, res) {
-  return res.send(await convo.all());
-});
-
-router.post('/:fingerPrint', async function(req, res) {
-  return res.send(await convo.findOrCreate(req.params.fingerPrint));
+router.post('/:roomId', async function(req, res) {
+  return res.send(await convo.findOrCreate(req.params.roomId));
 });
 
 module.exports = router;

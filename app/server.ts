@@ -17,10 +17,7 @@ var io = socketio(server);
 
 // Middleware
 app.use(cors);
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.raw());
-app.use(bodyParser.text());
+
 // Routers
 app.use('/message', messageController);
 app.use('/conversation', conversationController);
