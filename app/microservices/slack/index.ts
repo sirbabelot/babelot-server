@@ -2,7 +2,7 @@
 /**
  * @fileOverview This file serves as the interface for communicating with
  *     the slack microservice. It responds to chatEventEmitter events
- *       emitted in the lifecylce of a conversation.
+ *     emitted in the lifecylce of a conversation.
  *
  * NOTE(dharness): This file is under active development and its interface
  *     is subject to breaking changes.
