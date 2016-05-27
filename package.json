@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "the bablot api server",
   "scripts": {
-    "test": "ls"
+    "test": "sh test.sh"
   },
   "repository": {
     "type": "git",

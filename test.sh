@@ -1,1 +1,1 @@
-docker-compose run app npm run test
+docker-compose up && docker-compose run app npm run test
