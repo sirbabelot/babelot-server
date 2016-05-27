@@ -12,10 +12,10 @@ services:
     ports:
       - 9000:9000
 
-  slack:
-    dns: 8.8.8.8
-    ports:
-      - 50051:50051
+  # slack:
+  #   dns: 8.8.8.8
+  #   ports:
+  #     - 50051:50051
 
   chatterpillar:
 
