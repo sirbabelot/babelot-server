@@ -1,16 +1,12 @@
 version: '2'
 services:
   app:
-    links:
-      - rabbitmq:amq
     environment:
       - PGHOST=pg
       - PGDATABASE=postgres
       - PGUSER=postgres
 
   nginx:
-    links:
-      - app:node
     ports:
       - "9000:9000"
 
