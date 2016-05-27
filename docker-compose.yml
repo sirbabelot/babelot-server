@@ -1,8 +1,6 @@
 version: '2'
 services:
   app:
-    links:
-      - rabbitmq:amq
     environment:
       - PGHOST=pg
       - PGDATABASE=postgres
@@ -12,7 +10,7 @@ services:
     links:
       - app:node
     ports:
-      - "9000:9000"
+      - 9000:9000
 
   slack:
     dns: 8.8.8.8

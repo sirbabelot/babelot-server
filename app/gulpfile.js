@@ -17,8 +17,13 @@ gulp.task('lint', () => {
     }));
 });
 
+gulp.task('protos', () => {
+  gulp.src(['**/*.proto', `!${NODE_MODULES_PATH}`])
+    .pipe(gulp.dest('.tmp/'))
+});
 
-gulp.task('build', () => {
+
+gulp.task('build', ['protos'], () => {
   let outDir = '.tmp/';
   gulp.src([TS_PATH, `!${NODE_MODULES_PATH}`])
     .pipe(ts(tsconfig.compilerOptions))
