@@ -12,16 +12,22 @@ var message = {
   nickname: 'nick_name',
   fromFingerprint: 'f_f',
   roomId: 'room_id',
-  body: 'body__'
+  body: 'jungle juice',
+  reset: true
 };
 
-var stream = dispatch.sendMessage(message);
+var stream = dispatch.startConversation();
+
+// Start the conversation by setting the reset flag
+stream.write(message);
+message.reset = false;
+
 setInterval(() => {
   stream.write(message);
 }, 1000)
 
 stream.on('data', (response) => {
-  console.log(response);
+  console.log(response.body + '\n');
 });
 
 
