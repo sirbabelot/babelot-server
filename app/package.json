@@ -8,7 +8,7 @@
   },
   "scripts": {
     "pretest": "npm run build",
-    "test": "ls node_modules/.bin/",
+    "test": "node_modules/.bin/jasmine",
     "build": "gulp build",
     "build:w": "gulp build:w &",
     "prestart": "npm run build",
