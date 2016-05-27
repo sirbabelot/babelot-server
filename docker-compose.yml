@@ -7,6 +7,8 @@ services:
       - PGUSER=postgres
 
   nginx:
+    links:
+      - app:node
     ports:
       - 9000:9000
 
