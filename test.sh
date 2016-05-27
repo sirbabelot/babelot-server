@@ -1,2 +1,2 @@
 # docker-compose run app npm run test
-ls
+ls app
