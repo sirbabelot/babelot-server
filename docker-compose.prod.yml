@@ -9,8 +9,8 @@ services:
   nginx:
     image: bablot/nginx
 
-  slack:
-    image: bablot/slack
+  # slack:
+  #   image: bablot/slack
 
   chatterpillar:
     image: bablot/chatterpillar
