@@ -1,3 +1,7 @@
+/**
+ * @fileoverview This file stores the configuration object required for
+ *     Stately.js. It represents the state machine that composes the bot.
+ */
 var regex = require('./regex.js');
 var STATES = require('./states.json');
 var State = require('./State.js');
