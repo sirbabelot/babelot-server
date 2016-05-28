@@ -1,6 +1,10 @@
 "use strict";
 var engine = require('./engine/engine.js');
 
+/**
+ * The Dispatch class represents the set of RPC methods which can be called from
+ *     the client.
+ */
 class Dispatch {
   startConversation(call) {
     call.on('data', (message) => {
