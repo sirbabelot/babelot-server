@@ -1,28 +1,15 @@
 version: '2'
 services:
   app:
-    environment:
-      - PGHOST=pg
-      - PGDATABASE=postgres
-      - PGUSER=postgres
+    dns: 8.8.8.8
+
+  chatterpillar:
+    ports:
+      - 50052:50052
 
   nginx:
     links:
       - app:node
     ports:
       - 9000:9000
-
-  slack:
-    dns: 8.8.8.8
-    ports:
-      - 50051:50051
-
-  chatterpillar:
-
-  rabbitmq:
-    logging:
-      driver: "none"
-    image: rabbitmq:3
-    ports:
-      - "5672:5672"
 

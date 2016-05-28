@@ -7,10 +7,8 @@ var generateName = require('sillyname');
 var grpc = require('grpc');
 var path = require('path');
 var persist = require('services/Persist.js');
+var EVENTS = require('services/ChatEvents.js');
 
-
-var PROTO_PATH = path.resolve(__dirname, '../../protos/slack.proto');
-var slack = grpc.load(PROTO_PATH).slack;
 
 module.exports = class ChatService {
 
@@ -31,6 +29,7 @@ module.exports = class ChatService {
 
       // Businesses emit this when they go on/off line
       socket.on('business.changeStatus', (data) => {
+        this.chatEventEmitter.emit(EVENTS.BUSINESS.CHANGE_STATUS);
         if (data.status === 'online') {
           this.onlineBusinesses.set(data.businessId, socket);
           var business = { socket };
@@ -50,14 +49,11 @@ module.exports = class ChatService {
       });
 
       socket.on('client.startConversation', (data)=> {
+        this.chatEventEmitter.emit(EVENTS.CLIENT.START_CONVERSATION);
         //Create a new client object and store them in the online cache
         if (!data.clientInfo.nickname) {
           data.clientInfo.nickname = generateName();
         }
-
-        // Emit a message for all dispatch channels to listen
-        var channelRequest = new slack.ChannelRequest(data.clientInfo.nickname);
-        this.chatEventEmitter.emit('NEW_CONVERSATION', channelRequest);
 
         var client = new Client(socket,
             data.clientInfo.fingerprint,
@@ -82,9 +78,13 @@ module.exports = class ChatService {
         }
       });
 
-      socket.on('direct message', (data) => this.forwardMessage(data, socket));
+      socket.on('direct message', (data) => {
+        this.chatEventEmitter.emit(EVENTS.DIRECT_MESSAGE);
+        this.forwardMessage(data, socket);
+      });
 
       socket.on('disconnect', ()=> {
+        this.chatEventEmitter.emit(EVENTS.DISCONNECT);
         var client = this.onlineClients.get(socket.id);
         var clientSocket = this.onlineClients.get(socket.id) ? this.onlineClients.get(socket.id).socket : undefined;
         var businessSocket = this.onlineBusinesses.get('DEMO_ID');
