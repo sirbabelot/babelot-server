@@ -8,8 +8,6 @@ var http = require('http');
 var socketio = require('socket.io');
 // Controllers
 var conversationController = require('api/conversation/conversationController.js');
-var messageController = require('api/message/messageController.js');
-
 
 const PORT = process.env.PORT || 9000;
 var app = express();
@@ -20,7 +18,6 @@ var io = socketio(server);
 app.use(cors);
 
 // Routers
-app.use('/message', messageController);
 app.use('/conversation', conversationController);
 
 // Chat Service

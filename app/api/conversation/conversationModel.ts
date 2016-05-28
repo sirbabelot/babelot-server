@@ -1,5 +1,6 @@
 "use strict";
 var ConversationDB = require('schemas/conversationSchema.js');
+var messageModel = require('api/message/messageModel.js');
 
 
 class Conversation {
@@ -7,7 +8,7 @@ class Conversation {
     return await ConversationDB.find();
   }
 
-  async previewList(){
+  async previewList() {
 
     //Get Conversations and sort by date
     var conversations = await ConversationDB.find({}).sort({date: 'desc'});
@@ -15,7 +16,7 @@ class Conversation {
     //Get First Message of each Conversation and append to each conversation
     var mostRecentMessageIds = []
 
-    conversations.forEach((conversation)=> {
+    conversations.forEach((conversation) => {
       var messageId = conversation.Messages[conversation.Messages.length - 1]
       mostRecentMessageIds.push(messageId);
     })
@@ -23,12 +24,13 @@ class Conversation {
     var firstMessages = await messageModel.getMessagesByIds(mostRecentMessageIds);
     var newConversations = []
 
-    firstMessages.forEach((message, i)=> {
+    firstMessages.forEach((message, i) => {
       var newConvo = {
         firstMessage: '',
         convo: ''
       }
-      newConvo.firstMessage = firstMessages.Body;
+
+      newConvo.firstMessage = firstMessages[i].Body;
       newConvo.convo = conversations[i];
       newConversations.push(newConvo);
     })
