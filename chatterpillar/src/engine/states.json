@@ -1,0 +1,13 @@
+{
+  "HEY_THERE": "Hellooo!",
+  "GREETING": "are you looking for a place to rent?",
+  "HOUSE_APT": "do you prefer an entire place or individual room(s)?",
+  "NO_HELP": "Okay! If you still need  to talk to someone you can checkout our contact section! :D",
+  "NUM_OF_ROOMS": "How many rooms will you need?",
+  "MAX_PRICE": "what's your max price per room?",
+  "ANYTHING_ELSE": "please tell me anything else I should know",
+  "LOOK_INTO_IT": "I’ll look into places with {room_num} rooms that are less than {room_price}$",
+  "OK_GOOD": "ok sounds good!",
+  "YOU_AGAIN": "oh do you want to give it another go? :P",
+  "I_DONT_UNDERSTAND": "uhm..i don't get it lol :P "
+}

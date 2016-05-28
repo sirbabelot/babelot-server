@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package messages;
+
+// The Dispatch service definition.
+service Dispatch {
+  rpc StartConversation (stream ChatMessage) returns (stream ChatMessage) {}
+}
+
+// A message send to or from the landing page
+message ChatMessage {
+  string nickname = 1;
+  string fromFingerprint = 2;
+  string roomId = 3;
+  string body = 4;
+  bool reset = 5;
+}

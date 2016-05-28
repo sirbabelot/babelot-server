@@ -10,21 +10,15 @@ services:
       MONGO_URI: 'mongodb://sirblabsalot:bluecakes@ds051625.mlab.com:51625/dev_bablot'
     command: npm run dev
 
-  nginx:
-    build: ./nginx
-
-  # slack:
-  #   build: ./slack
-  #   command: npm start
-  #   volumes:
-  #     - ./protos:/usr/src/app/protos
-  #     - ./slack/src:/usr/src/app
-  #     - /usr/src/app/node_modules
-
   chatterpillar:
     build: ./chatterpillar
     volumes:
-      - ./chatterpillar:/usr/src/chatterpillar
-      - /usr/src/chatterpillar/node_modules
+      - ./protos:/usr/src/app/protos
+      - ./chatterpillar/src:/usr/src/app
+      - /usr/src/app/node_modules
     command: npm run dev
+
+  nginx:
+    build: ./nginx
+
 

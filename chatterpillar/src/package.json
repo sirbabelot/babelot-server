@@ -1,0 +1,19 @@
+{
+  "name": "chatbot",
+  "version": "1.0.0",
+  "description": "the chatbot service",
+  "main": "grpcServer.js",
+  "dependencies": {
+    "grpc": "^0.14.1",
+    "nodemon": "^1.9.2",
+    "stately.js": "^1.3.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "dev": "nodemon -L grpcServer.js --watch ./",
+    "start": "nodemon ./grpcServer.js",
+    "test": "echo \"Error: no test specified\" && exit 0"
+  },
+  "author": "bablot",
+  "license": "ISC"
+}

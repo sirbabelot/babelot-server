@@ -6,12 +6,10 @@ services:
       MONGO_URI: 'mongodb://sirblabsalot:bluecakes@ds061984.mlab.com:61984/bablot'
     command: npm start
 
-  nginx:
-    image: bablot/nginx
-
-  # slack:
-  #   image: bablot/slack
-
   chatterpillar:
     image: bablot/chatterpillar
     command: npm start
+
+  nginx:
+    image: bablot/nginx
+
