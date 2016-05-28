@@ -1,3 +1,7 @@
+/**
+ * This file creates a grpc server which can receive RPC calls. It configers and
+ *     makes available grpc services.
+ */
 var path = require('path');
 var grpc = require('grpc');
 var dispatch = require('./dispatch.js');
