@@ -11,14 +11,8 @@ addons:
   - 162.243.218.96
 after_success:
   - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-  - docker-compose -f docker-compose.yml -f docker-compose.override.yml -f docker-compose.prod.yml build app
-  - docker-compose -f docker-compose.yml -f docker-compose.override.yml -f docker-compose.prod.yml build nginx
-  - docker-compose -f docker-compose.yml -f docker-compose.override.yml -f docker-compose.prod.yml build chatterpillar
-  - docker-compose -f docker-compose.yml -f docker-compose.override.yml -f docker-compose.prod.yml build slack
-  - docker push bablot/app
-  - docker push bablot/nginx
-  - docker push bablot/chatterpillar
-  - docker push bablot/slack
+  - sh ./bash/build.sh
+  - sh ./bash/push.sh
   - chmod 600 deploy_key
   - ./node_modules/.bin/shipit staging deploy
 branches:
