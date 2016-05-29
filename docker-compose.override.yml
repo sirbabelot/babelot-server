@@ -20,5 +20,7 @@ services:
 
   nginx:
     build: ./nginx
+    volumes:
+      - ./nginx:/etc/nginx/
 
 
