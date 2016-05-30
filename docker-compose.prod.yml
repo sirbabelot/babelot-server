@@ -3,6 +3,7 @@ services:
   app:
     image: bablot/app
     environment:
+      BABLOT_API_URL: 'https://162.243.218.96:9000'
       MONGO_URI: 'mongodb://sirblabsalot:bluecakes@ds061984.mlab.com:61984/bablot'
     command: npm start
 

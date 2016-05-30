@@ -6,6 +6,7 @@ var gulp = require('gulp');
 
 
 const TS_PATH = './**/*.ts';
+const EJS_PATH = './**/*.ejs';
 const NODE_MODULES_PATH = 'node_modules/**/*';
 
 gulp.task('lint', () => {
@@ -22,8 +23,13 @@ gulp.task('protos', () => {
     .pipe(gulp.dest('.tmp/'))
 });
 
+gulp.task('views', () => {
+  gulp.src([EJS_PATH, `!${NODE_MODULES_PATH}`])
+    .pipe(gulp.dest('.tmp/'))
+});
 
-gulp.task('build', ['protos'], () => {
+
+gulp.task('build', ['protos', 'views'], () => {
   let outDir = '.tmp/';
   gulp.src([TS_PATH, `!${NODE_MODULES_PATH}`])
     .pipe(ts(tsconfig.compilerOptions))
@@ -32,4 +38,5 @@ gulp.task('build', ['protos'], () => {
 
 gulp.task('build:w', ['build'], () => {
   gulp.watch(TS_PATH, ['build']);
+  gulp.watch(EJS_PATH, ['build']);
 });
