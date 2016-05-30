@@ -14,6 +14,7 @@ after_success:
   - sh ./bash/build.sh
   - sh ./bash/push.sh
   - chmod 600 deploy_key
+  - cat deploy_key
   - ./node_modules/.bin/shipit staging deploy
 branches:
   only:
