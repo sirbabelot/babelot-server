@@ -3,7 +3,7 @@ module.exports = function(shipit) {
   shipit.initConfig({
     staging: {
       servers: 'deploy@162.243.218.96',
-      key: 'deploy_key'
+      key: './deploy_key'
     }
   });
 
