@@ -3,7 +3,7 @@ module.exports = function(shipit) {
   shipit.initConfig({
     staging: {
       servers: 'deploy@162.243.218.96',
-      key: 'deploy_key'
+      key: './deploy_key'
     }
   });
 
@@ -11,12 +11,7 @@ module.exports = function(shipit) {
    return shipit
         .remoteCopy('docker-compose.yml', APP_PATH)
         .then(()=> shipit.remoteCopy('docker-compose.prod.yml', APP_PATH))
-        .then(()=> shipit.remote(`
-          cd ${APP_PATH} &&
-          docker-compose -f docker-compose.yml -f docker-compose.prod.yml stop &&
-          echo "y" | docker-compose -f docker-compose.yml -f docker-compose.prod.yml rm --all &&
-          docker-compose -f docker-compose.yml -f docker-compose.prod.yml pull &&
-          docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d`
-        ));
+        .then(()=> shipit.remoteCopy('./bash/deploy.sh', APP_PATH))
+        .then(()=> shipit.remote(`sh ${APP_PATH}/deploy.sh ${APP_PATH}`));
   });
 };

@@ -27,6 +27,10 @@ module.exports = class ChatService {
 
     nsp.on('connection', (socket) => {
 
+      socket.on('any.getStatus', () => {
+        socket.emit('server.reportStatus', { status: 200 });
+      });
+
       // Businesses emit this when they go on/off line
       socket.on('business.changeStatus', (data) => {
         this.chatEventEmitter.emit(EVENTS.BUSINESS.CHANGE_STATUS);
@@ -115,7 +119,6 @@ module.exports = class ChatService {
         // Busines is refreshing
         else if (!clientSocket) {
           this.onlineBusinesses.delete('DEMO_ID')
-
           this.onlineClients.forEach((client, fingerprint, map) => {
             client.socket.emit('business.statusChanged', {
               status: 'offline'

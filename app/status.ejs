@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>okoko</title>
+  <style type="text/css">
+    .statuses {
+      border: solid 1px black;
+      border-radius: 2px;
+      width: 30%;
+    }
+  </style>
+</head>
+  <body>
+    <h5>Statuses</h5>
+    <div class="statuses">
+      <p>bablot api url: <%= BABLOT_API_URL %></p>
+      <p>api <%= api %></p>
+    </div>
+    <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+    <% if (BABLOT_API_URL) { %>
+         <script>
+            // Hack to get the variable from EJS
+            var BABLOT_API_URL = '<%= BABLOT_API_URL %>';
+
+            // Connect to our server and check the status
+            socket = io(`${BABLOT_API_URL}/DEMO_ID`);
+            socket.on(`server.reportStatus`, (data) => {
+              addStatusToPage(data.status);
+            });
+            socket.emit(`any.getStatus`);
+
+            // Add the status to the page
+            function addStatusToPage(status) {
+              var chatterpillarStatus = status;
+              var div = document.createElement('DIV');
+              div.innerHTML = `<p> chatterpillar ${chatterpillarStatus}</p>`;
+              document.querySelector('.statuses').appendChild(div.childNodes[0]);
+            }
+         </script>
+    <% } %>
+
+  </body>
+</html>
+

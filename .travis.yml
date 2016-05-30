@@ -2,33 +2,29 @@ language: node_js
 env:
   DOCKER_COMPOSE_VERSION: 1.7.1
 node_js:
-  - '5'
+- '5'
 sudo: required
 services:
-  - docker
+- docker
 addons:
   ssh_known_hosts:
   - 162.243.218.96
 after_success:
-  - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-  - docker-compose -f docker-compose.yml -f docker-compose.override.yml -f docker-compose.prod.yml build app
-  - docker-compose -f docker-compose.yml -f docker-compose.override.yml -f docker-compose.prod.yml build nginx
-  - docker-compose -f docker-compose.yml -f docker-compose.override.yml -f docker-compose.prod.yml build chatterpillar
-  - docker-compose -f docker-compose.yml -f docker-compose.override.yml -f docker-compose.prod.yml build slack
-  - docker push bablot/app
-  - docker push bablot/nginx
-  - docker push bablot/chatterpillar
-  - docker push bablot/slack
-  - chmod 600 deploy_key
-  - ./node_modules/.bin/shipit staging deploy
+- docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+- sh ./bash/build.sh
+- sh ./bash/push.sh
+- chmod 600 deploy_key
+- cat deploy_key
+- ./node_modules/.bin/shipit staging deploy
 branches:
   only:
   - master
 before_install:
-  - sudo apt-get install -o Dpkg::Options::="--force-confold" --force-yes -y docker-engine
-  - sudo rm /usr/local/bin/docker-compose
-  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
-  - chmod +x docker-compose
-  - sudo mv docker-compose /usr/local/bin
-  - openssl aes-256-cbc -K $encrypted_39780c9b113a_key -iv $encrypted_39780c9b113a_iv
-    -in deploy_key.enc -out deploy_key -d
+- openssl aes-256-cbc -K $encrypted_0951342a64aa_key -iv $encrypted_0951342a64aa_iv
+  -in deploy_key.enc -out deploy_key -d
+- sudo apt-get install -o Dpkg::Options::="--force-confold" --force-yes -y docker-engine
+- sudo rm /usr/local/bin/docker-compose
+- curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname
+  -s`-`uname -m` > docker-compose
+- chmod +x docker-compose
+- sudo mv docker-compose /usr/local/bin

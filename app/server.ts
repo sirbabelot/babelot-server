@@ -2,12 +2,12 @@
 'use strict';
 require('app-module-path').addPath(__dirname);
 var Chat = require('services/chatService.js');
+var conversationController = require('api/conversation/conversationController.js');
 var cors = require('middleware/cors.js');
 var express = require('express');
 var http = require('http');
+var path = require('path');
 var socketio = require('socket.io');
-// Controllers
-var conversationController = require('api/conversation/conversationController.js');
 
 const PORT = process.env.PORT || 9000;
 var app = express();
@@ -16,6 +16,8 @@ var io = socketio(server);
 
 // Middleware
 app.use(cors);
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, '.'));
 
 // Routers
 app.use('/conversation', conversationController);
@@ -32,12 +34,14 @@ chat.init();
  */
 app.get('/status', (req, res) => {
   let status = {
+    // If you can access this route, API is working
     api: 200,
     chindow: 400,
     slack: 400,
-    chatterpiller: 400
+    chatterpiller: 400,
+    BABLOT_API_URL: process.env.BABLOT_API_URL
   };
-  res.send(status);
+  res.render('./status', status);
 });
 
 server.listen(PORT, () => {

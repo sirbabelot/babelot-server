@@ -7,6 +7,7 @@ services:
       - ./app:/usr/src/app
       - /usr/src/app/node_modules
     environment:
+      BABLOT_API_URL: 'https://dev.api.bablot.co:9000'
       MONGO_URI: 'mongodb://sirblabsalot:bluecakes@ds051625.mlab.com:51625/dev_bablot'
     command: npm run dev
 
@@ -20,5 +21,7 @@ services:
 
   nginx:
     build: ./nginx
+    volumes:
+      - ./nginx:/etc/nginx/
 
 
