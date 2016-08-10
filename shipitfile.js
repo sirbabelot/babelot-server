@@ -1,4 +1,6 @@
 const APP_PATH = '/home/deploy/app'
+
+// good stuff
 module.exports = function(shipit) {
   shipit.initConfig({
     staging: {
